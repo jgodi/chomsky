@@ -1,5 +1,5 @@
-import {Interpolator} from './interpolator.ts';
-import {AsyncLoader} from './asyncLoader.ts';
+import {Interpolator} from './interpolator';
+import {AsyncLoader} from './asyncLoader';
 
 export class Chomsky {
 	interpolator: Object;

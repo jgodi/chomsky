@@ -6,8 +6,15 @@
     <script>
         System.config({
             transpiler: 'typescript',
-            map: {typescript: './node_modules/typescript/lib/typescript.js'}
+            packages: {
+                './src': {
+                    defaultExtension: 'ts'
+                }
+            },
+            map: {
+                typescript: './node_modules/typescript/lib/typescript.js'
+            }
         });
-        System.import('./src/chomsky.ts');
+        System.import('./src/chomsky');
     </script>
 </html>

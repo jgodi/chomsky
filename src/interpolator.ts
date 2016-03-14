@@ -1,5 +1,5 @@
 /// <reference path="../typings/es6-promise/es6-promise.d.ts" />
-import {AsyncLoader} from './asyncLoader.ts';
+import {AsyncLoader} from './asyncLoader';
 
 export class Interpolator {
 	defaults: Object;
