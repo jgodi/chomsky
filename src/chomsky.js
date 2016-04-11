@@ -1,11 +1,6 @@
-import moment = require("moment");
-
+var moment = require('moment');
 
 export class Chomsky {
-	currentLanguage: any;
-	translationsDictionary: any;
-	changeHandlers: any;
-
 	constructor(language, translationObject) {
 		this.currentLanguage = language;
 		this.translationsDictionary = {
@@ -14,64 +9,12 @@ export class Chomsky {
 		this.changeHandlers = [];
 	}
 
-	onChange(callback) {
-		if (callback && typeof callback === 'function') {
-			this.changeHandlers.push(callback);
-		}
+	addTranslation(key, language, translation) {
+		// TODO: recursive
+		this.translationsDictionary[language][key] = translation;
 	}
 
-	setLanguage(language, translationObject = null) {
-		if (!translationObject) {
-			translationObject = this.translationsDictionary[language];
-		}
-		return new Promise((resolve, reject) => {
-			// Now, only language is required
-			if (language) {
-				if (this.currentLanguage === language) {
-					resolve();
-				} else if (typeof translationObject === 'object') {
-					this.applyLanguage(language, translationObject);
-					resolve();
-				} else if (typeof translationObject === 'string') {
-					this.resolveTranslationObject(translationObject)
-						.then(
-							(translationObject) => {
-								this.applyLanguage(language, translationObject);
-								resolve();
-							},
-							(reason) => reject(reason)
-						);
-				} else {
-					reject('No resolution for specified translationObject type exists.');
-				}
-			} else {
-				reject('setLanguage: language is mandatory');
-			}
-		});
-	}
-
-	applyLanguage(language, translationObject) {
-		this.currentLanguage = language;
-		this.translationsDictionary[language] = translationObject;
-		this.changeHandlers.forEach((callback) => callback());
-	}
-
-	resolveTranslationObject(url: string) {
-		return new Promise((resolve, reject) => {
-			this.translationFetcher(url).then(
-				(translationObject) => {
-					if (translationObject) {
-						resolve(translationObject);
-					} else {
-						reject('translationFetcher resolved without translation object');
-					}
-				},
-				(reason) => reject(`translationFetcher failed: ${reason}`)
-			);
-		});
-	}
-
-	translationFetcher(url: string) {
+	translationFetcher(url) {
 		return new Promise(function(resolve, reject) {
 			var xhr = new XMLHttpRequest();
 			xhr.open('GET', url);
@@ -100,9 +43,72 @@ export class Chomsky {
 		});
 	}
 
+	onChange(callback) {
+		if (callback && typeof callback === 'function') {
+			this.changeHandlers.push(callback);
+		}
+	}
 
-	private constructDate(date: string, format?: string): string {
-		let dateString: string;
+	setLanguage(language, translationObject = null) {
+		if (!translationObject) {
+			translationObject = this.translationsDictionary[language];
+		}
+		return new Promise((resolve, reject) => {
+			// Now, only language is required
+			if (language) {
+				if (this.currentLanguage === language) {
+					resolve();
+				} else if (translationObject) {
+					this.applyLanguage(language, translationObject);
+					resolve();
+				} else {
+					this.resolveTranslationObject(language)
+						.then(
+							(translationObject) => {
+								this.applyLanguage(language, translationObject);
+								resolve();
+							},
+							(reason) => reject(reason)
+						);
+				}
+			} else {
+				reject('setLanguage: language is mandatory');
+			}
+		});
+	}
+
+	applyLanguage(language, translationObject) {
+		this.currentLanguage = language;
+		this.translationsDictionary[language] = translationObject;
+		this.changeHandlers.forEach((callback) => callback());
+	}
+
+	resolveTranslationObject(language) {
+		return new Promise((resolve, reject) => {
+			if (this.translationFetcher && typeof this.translationFetcher === `function`) {
+				var promise = this.translationFetcher(language);
+				if (!promise || typeof promise.then !== 'function') {
+					reject('translationFetcher should return a promise');
+				}
+
+				promise.then(
+					(translationObject) => {
+						if (translationObject) {
+							resolve(translationObject);
+						} else {
+							reject('translationFetcher resolved without translation object');
+						}
+					},
+					(reason) => reject(`translationFetcher failed: ${reason}`)
+				);
+			} else {
+				reject('Cannot resolve translation object');
+			}
+		});
+	}
+
+	constructDate(date, format) {
+		let dateString = '';
 		if (!format) {
 			dateString = moment(date).format('MM[/]DD[/]YYYY');
 		} else {
@@ -111,7 +117,7 @@ export class Chomsky {
 		return dateString;
 	}
 
-	private constructCurrency(currency: string, denominator: string): string {
+	constructCurrency(currency, denominator) {
 		return denominator + currency.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 	}
 
@@ -176,4 +182,4 @@ export class Chomsky {
 	}
 }
 
-
+export default Chomsky;
