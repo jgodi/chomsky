@@ -12,7 +12,10 @@
     ],
     "files": [
         "src/chomsky.ts",
+        "src/cacheManager.ts",
+        "src/languageManager.ts",
         "src/asyncLoader.ts",
-        "src/interpolator.ts"
+        "src/interpolator.ts",
+        "src/i18n/invariant.ts"
     ]
 }

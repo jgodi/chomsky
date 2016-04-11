@@ -1,6 +1,6 @@
 {
   "name": "chomsky",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "/src/chomsky.ts",
   "author": "",
@@ -8,5 +8,8 @@
   "devDependencies": {
     "systemjs": "^0.19.24",
     "typescript": "^1.8.7"
+  },
+  "dependencies": {
+    "moment": "^2.12.0"
   }
 }
