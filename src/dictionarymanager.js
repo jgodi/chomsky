@@ -34,9 +34,4 @@ export class DictionaryManager {
     removeDictionary(languageKey) {
         this.dictionaries[languageKey] = {};
     }
-
-    deepCopy() {
-
-    }
-
 }
