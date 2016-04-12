@@ -1,16 +1,24 @@
+// App
+import {Storage} from './storage';
+// Vendor
 var objectAssignDeep = require('object-assign-deep');
 
 export class DictionaryManager {
     constructor() {
+        this.storage = new Storage('dictionary-manager');
+        this.storageKey = 'dictionary';
+
         this.locale = window.navigator.language.split('-');
-        // TODO: get this from last value used via localStorage
+        // TODO: get this from last value used via localStorage (build preferences)
         this.preferredLanguage = this.locale[0];
+
         this.initializeDictionaries(this.preferredLanguage);
     }
 
     initializeDictionaries(preferredLanguage) {
-        // TODO: recall dictionaries from localStorage
-        this.dictionaries = {};
+        // Recall dictionaries from localStorage
+        this.dictionaries = this.storage.getItem(this.storageKey) || {};
+
         if (!this.dictionaries.hasOwnProperty(preferredLanguage)) {
             // Create new language for preferred language
             this.addNewTranslation(preferredLanguage, {});
@@ -28,8 +36,8 @@ export class DictionaryManager {
         }
         // Add new translation to dictionary
         this.dictionaries[languageKey] =  objectAssignDeep({}, this.dictionaries[languageKey], translations);
-
-        // TODO: cache all when new dictionary is added
+        // Cache translations
+        this.storage.setItem(this.storageKey, this.dictionaries);
     }
     removeDictionary(languageKey) {
         this.dictionaries[languageKey] = {};

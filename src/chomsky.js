@@ -1,13 +1,16 @@
 // App
 import {DictionaryManager} from './dictionarymanager';
+import {AsyncLoader} from './asyncloader';
 // Vendor
 var moment = require('moment');
 
 export class Chomsky {
 	constructor() {
-		//this.currentLanguage = language;
 		this.dictionaryManager = new DictionaryManager;
+		this.asyncLoader = new AsyncLoader;
+
 		this.translationsDictionary = this.dictionaryManager.dictionaries;
+
 		this.changeHandlers = [];
 	}
 
@@ -16,32 +19,7 @@ export class Chomsky {
 	}
 
 	translationFetcher(url) {
-		return new Promise((resolve, reject) => {
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', url);
-
-			xhr.onload = () => {
-				if (xhr.status === 200) {
-					try {
-						let translationObject = JSON.parse(xhr.responseText);
-						resolve(translationObject);
-					} catch(e) {
-						let error = new Error(`Parse Error: ${e.toString()}`);
-						reject(error);
-					}
-				} else {
-					let error = new Error(xhr.statusText);
-					reject(error);
-				}
-			};
-
-			xhr.onerror = () => {
-				var error = new Error('Network Error');
-				reject(error);
-			};
-
-			xhr.send();
-		});
+		return this.asyncLoader.load(url);
 	}
 
 	onChange(callback) {
@@ -65,11 +43,11 @@ export class Chomsky {
 				} else {
 					this.resolveTranslationObject(language)
 						.then(
-							(translationObject) => {
+							translationObject => {
 								this.applyLanguage(language, translationObject);
 								resolve();
 							},
-							(reason) => reject(reason)
+							reason => reject(reason)
 						);
 				}
 			} else {
@@ -80,31 +58,31 @@ export class Chomsky {
 
 	applyLanguage(language, translationObject) {
 		this.currentLanguage = language;
-		this.translationsDictionary[language] = translationObject;
+
+		//this.currentDictionary = this.dictionaryManager.dictionaries[language];
+
+		//this.dictionaryManager.addNewTranslation(language, translationObject);
 		this.changeHandlers.forEach((callback) => callback());
 	}
 
 	resolveTranslationObject(language) {
 		return new Promise((resolve, reject) => {
-			if (this.translationFetcher && typeof this.translationFetcher === `function`) {
-				var promise = this.translationFetcher(language);
-				if (!promise || typeof promise.then !== 'function') {
-					reject('translationFetcher should return a promise');
-				}
+			//var promise = ;
 
-				promise.then(
-					(translationObject) => {
+			if (!promise || typeof promise.then !== 'function') {
+				reject('translationFetcher should return a promise');
+			}
+
+			this.translationFetcher(language)
+				.then(translationObject => {
 						if (translationObject) {
 							resolve(translationObject);
 						} else {
 							reject('translationFetcher resolved without translation object');
 						}
 					},
-					(reason) => reject(`translationFetcher failed: ${reason}`)
+					reason => reject(`translationFetcher failed: ${reason}`)
 				);
-			} else {
-				reject('Cannot resolve translation object');
-			}
 		});
 	}
 

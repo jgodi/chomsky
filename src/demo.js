@@ -8,7 +8,7 @@ class Demo {
         // Greeting
         this.chomsky = new Chomsky;
 
-        this.chomsky.addTranslation('en', enTranslationObject);
+        this.chomsky.setLanguage('en', enTranslationObject);
 
         console.log(this.chomsky.translate('GREETING', {name: 'John'}));
 
