@@ -354,3 +354,83 @@ describe('Default Implementation Tests', () => {
     });
 
 });
+
+describe('Localstorage Implementation Tests', () => {
+    it('constructor', () => {
+        let setKey = '';
+        let removeKey = '';
+
+        localStorage.clear();
+
+        let storage = new Storage('test');
+
+        localStorage.clear();
+    });
+
+    it('getItem missing', () => {
+        localStorage.clear();
+
+        let storage = new Storage('test');
+        let actualObj = storage.getItem('foo');
+
+        expect(actualObj).toEqual(storage.defaultObject);
+
+        localStorage.clear();
+    });
+
+    it('getItem/setItem', () => {
+        let expectedValue = {field1: 'field1', field2:'field2'};
+        let key = 'testKey';
+
+        localStorage.clear();
+
+        let storage = new Storage('test');
+        storage.setItem(key, expectedValue);
+        let actualValue = storage.getItem(key);
+
+        expect(actualValue).toEqual(expectedValue);
+
+        localStorage.clear();
+    });
+
+    it('removeItem', () => {
+        let expectedValue = 'expectedValue';
+        let key = 'testKey';
+
+        localStorage.clear();
+
+        let storage = new Storage('test');
+        storage.setItem(key, expectedValue);
+        let actualValue = storage.getItem(key);
+
+        expect(actualValue == expectedValue);
+
+        storage.removeItem(key);
+        actualValue = storage.getItem(key);
+
+        expect(actualValue).toEqual(storage.defaultObject);
+
+        localStorage.clear();
+    });
+
+    it('clear', () => {
+        let expectedValue = 'expectedValue';
+        let key = 'testKey';
+
+        localStorage.clear();
+
+        let storage = new Storage('test');
+        storage.setItem(key, expectedValue);
+        let actualValue = storage.getItem(key);
+
+        expect(actualValue == expectedValue);
+
+        storage.clear();
+        actualValue = storage.getItem(key);
+
+        expect(actualValue).toEqual(storage.defaultObject);
+
+        localStorage.clear();
+    });
+
+});
