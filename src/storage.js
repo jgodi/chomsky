@@ -51,8 +51,8 @@ export class Storage {
     _createDefaultImplementation() {
         return  {
             getItem: (key) => {
-                let valueStr = undefined;
-                if (key in this.topLevel) {
+                let valueStr = null;
+                if (this.topLevel[key]) {
                     valueStr = this.topLevel[key];
                 }
                 return valueStr;
@@ -69,10 +69,14 @@ export class Storage {
         }
     }
 
+    getStorageKey(key) {
+        return this.prefix + '-' + key;
+    }
+
     getItem(key) {
-        let valueStr = this.storage.getItem(this.prefix + '-' + key);
-        let value = undefined;
-        if (valueStr === undefined) {
+        let valueStr = this.storage.getItem(this.getStorageKey(key));
+        let value = null;
+        if (valueStr == null) {
             value = this.defaultObject;
         } else {
             value = JSON.parse(valueStr);
@@ -82,15 +86,15 @@ export class Storage {
     }
 
     setItem(key, value) {
-        let valueStr = undefined;
-        if (typeof value === undefined) {
+        let valueStr = null;
+        if (value != null) {
             valueStr = JSON.stringify(value)
         }
-        this.storage.setItem(this.prefix + '-' + key, valueStr);
+        this.storage.setItem(this.getStorageKey(key), valueStr);
     }
 
     removeItem(key) {
-        this.storage.removeItem(this.prefix + '-' + key);
+        this.storage.removeItem(this.getStorageKey(key));
     }
 
     clear() {

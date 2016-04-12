@@ -32,7 +32,7 @@ describe('LocalStorage Tests', () => {
         let storage = new Storage('test');
         let actaul = storage.getItem('key');
 
-        expect(actaul == storage.defaultObject);
+        expect(actaul).toEqual(storage.defaultObject);
     });
 
     it('getItem', () => {
@@ -53,7 +53,7 @@ describe('LocalStorage Tests', () => {
         let storage = new Storage('test');
         let actaul = storage.getItem('key');
 
-        expect(actaul.success);
+        expect(actaul).toEqual({success:true});
     });
 
     it("setItem", () =>{
@@ -181,7 +181,7 @@ describe('SessionStorage Tests', () => {
         let storage = new Storage('test');
         let actaul = storage.getItem('key');
 
-        expect(actaul.success);
+        expect(actaul).toEqual({success:true});
     });
 
     it('setItem', () => {
@@ -281,11 +281,11 @@ describe('Default Implementation Tests', () => {
         let storage = new Storage('test');
         let actualObj = storage.getItem('foo');
 
-        expect(actualObj == storage.defaultObject);
+        expect(actualObj).toEqual(storage.defaultObject);
     });
 
     it('getItem/setItem', () => {
-        let expectedValue = 'expectedValue';
+        let expectedValue = {field1: 'field1', field2:'field2'};
         let key = 'testKey';
 
         spyOn(localStorage, 'setItem').and.callFake(function (key, value) {
@@ -300,7 +300,7 @@ describe('Default Implementation Tests', () => {
         storage.setItem(key, expectedValue);
         let actualValue = storage.getItem(key);
 
-        expect(actualValue == expectedValue);
+        expect(actualValue).toEqual(expectedValue);
     });
 
     it('removeItem', () => {
@@ -324,7 +324,7 @@ describe('Default Implementation Tests', () => {
         storage.removeItem(key);
         actualValue = storage.getItem(key);
 
-        expect(actualValue == storage.defaultObject);
+        expect(actualValue).toEqual(storage.defaultObject);
 
     });
 
@@ -349,7 +349,7 @@ describe('Default Implementation Tests', () => {
         storage.clear();
         actualValue = storage.getItem(key);
 
-        expect(actualValue == storage.defaultObject);
+        expect(actualValue).toEqual(storage.defaultObject);
 
     });
 
