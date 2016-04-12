@@ -41,10 +41,9 @@ describe('Class: DictionaryManager', () => {
             instance.addNewTranslation('es', mockSpanishTranslations);
             expect(instance.dictionaries['es']).toBeDefined();
             expect(instance.dictionaries['es'].greeting).toBe('Hola');
-
         });
 
-        it('should create merge translations when there is a dictionary.', () => {
+        it('should merge translations when there is a dictionary.', () => {
             expect(instance.addNewTranslation).toBeDefined();
             let mockFrenchTranslations = {
                 greeting: 'Bonjour'
@@ -54,16 +53,42 @@ describe('Class: DictionaryManager', () => {
             };
             let mockLanguageKey = 'fr';
             instance.addNewTranslation(mockLanguageKey, mockFrenchTranslations);
-            expect(instance.dictionaries['fr']).toBeDefined();
-            expect(instance.dictionaries['fr'].greeting).toBe('Bonjour');
+            expect(instance.dictionaries[mockLanguageKey]).toBeDefined();
+            expect(instance.dictionaries[mockLanguageKey].greeting).toBe('Bonjour');
             instance.addNewTranslation(mockLanguageKey, mockFrenchTranslations2);
-            expect(instance.dictionaries['fr']).toBeDefined();
-            expect(instance.dictionaries['fr'].greeting).toBe('Bonjour');
-            expect(instance.dictionaries['fr'].farewell).toBe('Au Revoir');
+            expect(instance.dictionaries[mockLanguageKey]).toBeDefined();
+            expect(instance.dictionaries[mockLanguageKey].greeting).toBe('Bonjour');
+            expect(instance.dictionaries[mockLanguageKey].farewell).toBe('Au Revoir');
         });
 
-        it('should create a new dictionary when there isn\'t one.', () => {
+        it('should deep merge translations when there is a dictionary.', () => {
             expect(instance.addNewTranslation).toBeDefined();
+            let mockFrenchTranslations = {
+                greeting: 'Bonjour',
+                welcome: {
+                    message: 'Bienvenue sur le site'
+                }
+            };
+            let mockFrenchTranslations2 = {
+                farewell: 'Au Revoir',
+                welcome: {
+                    subheading: 'Merci pour votre visite.'
+                }
+            };
+            let mockLanguageKey = 'fr';
+            instance.addNewTranslation(mockLanguageKey, mockFrenchTranslations);
+            expect(instance.dictionaries[mockLanguageKey]).toBeDefined();
+            expect(instance.dictionaries[mockLanguageKey].greeting).toBe('Bonjour');
+            expect(instance.dictionaries[mockLanguageKey].welcome).toBeDefined();
+            expect(instance.dictionaries[mockLanguageKey].welcome.message).toBe('Bienvenue sur le site');
+            instance.addNewTranslation(mockLanguageKey, mockFrenchTranslations2);
+            expect(instance.dictionaries[mockLanguageKey]).toBeDefined();
+            expect(instance.dictionaries[mockLanguageKey].greeting).toBe('Bonjour');
+            expect(instance.dictionaries[mockLanguageKey].welcome).toBeDefined();
+            expect(instance.dictionaries[mockLanguageKey].welcome.message).toBe('Bienvenue sur le site');
+            expect(instance.dictionaries[mockLanguageKey].farewell).toBe('Au Revoir');
+            expect(instance.dictionaries[mockLanguageKey].welcome).toBeDefined();
+            expect(instance.dictionaries[mockLanguageKey].welcome.subheading).toBe('Merci pour votre visite.');
         });
     });
 
@@ -76,11 +101,11 @@ describe('Class: DictionaryManager', () => {
             };
             let mockLanguageKey = 'fr';
             instance.addNewTranslation(mockLanguageKey, mockFrenchTranslations);
-            expect(instance.dictionaries['fr']).toBeDefined();
-            expect(instance.dictionaries['fr'].greeting).toBe('Bonjour');
+            expect(instance.dictionaries[mockLanguageKey]).toBeDefined();
+            expect(instance.dictionaries[mockLanguageKey].greeting).toBe('Bonjour');
             instance.removeDictionary(mockLanguageKey);
-            expect(instance.dictionaries['fr']).toBeDefined();
-            expect(instance.dictionaries['fr'].greeting).toBeUndefined();
+            expect(instance.dictionaries[mockLanguageKey]).toBeDefined();
+            expect(instance.dictionaries[mockLanguageKey].greeting).toBeUndefined();
         });
     });
 

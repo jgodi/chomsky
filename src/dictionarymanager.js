@@ -1,3 +1,5 @@
+var objectAssignDeep = require('object-assign-deep');
+
 export class DictionaryManager {
     constructor() {
         this.locale = window.navigator.language.split('-');
@@ -25,11 +27,16 @@ export class DictionaryManager {
             this.dictionaries[languageKey] = {};
         }
         // Add new translation to dictionary
-        this.dictionaries[languageKey] =  Object.assign({}, this.dictionaries[languageKey], translations);
+        this.dictionaries[languageKey] =  objectAssignDeep({}, this.dictionaries[languageKey], translations);
 
         // TODO: cache all when new dictionary is added
     }
     removeDictionary(languageKey) {
         this.dictionaries[languageKey] = {};
     }
+
+    deepCopy() {
+
+    }
+
 }

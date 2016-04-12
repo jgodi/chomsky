@@ -1,17 +1,18 @@
+// App
+import {DictionaryManager} from './dictionarymanager';
+// Vendor
 var moment = require('moment');
 
 export class Chomsky {
-	constructor(language, translationObject) {
-		this.currentLanguage = language;
-		this.translationsDictionary = {
-			[language]: translationObject
-		};
+	constructor() {
+		//this.currentLanguage = language;
+		this.dictionaryManager = new DictionaryManager;
+		this.translationsDictionary = this.dictionaryManager.dictionaries;
 		this.changeHandlers = [];
 	}
 
-	addTranslation(key, language, translation) {
-		// TODO: recursive
-		this.translationsDictionary[language][key] = translation;
+	addTranslation(language, translation) {
+		this.dictionaryManager.addNewTranslation(language, translation);
 	}
 
 	translationFetcher(url) {
@@ -122,8 +123,8 @@ export class Chomsky {
 	}
 
 	translate(key, interpolation, pluralValue) {
-		var tokens = key.split('.');
-		var value = this.translationsDictionary[this.currentLanguage];
+		let tokens = key.split('.');
+		let value = this.translationsDictionary[this.currentLanguage];
 
 		for (let i = 0; i < tokens.length && value !== undefined; i++) {
 			value = value[tokens[i]];
