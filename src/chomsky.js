@@ -15,11 +15,11 @@ export class Chomsky {
 	}
 
 	translationFetcher(url) {
-		return new Promise(function(resolve, reject) {
+		return new Promise((resolve, reject) => {
 			var xhr = new XMLHttpRequest();
 			xhr.open('GET', url);
 
-			xhr.onload = function() {
+			xhr.onload = () => {
 				if (xhr.status === 200) {
 					try {
 						let translationObject = JSON.parse(xhr.responseText);
@@ -34,7 +34,7 @@ export class Chomsky {
 				}
 			};
 
-			xhr.onerror = function() {
+			xhr.onerror = () => {
 				var error = new Error('Network Error');
 				reject(error);
 			};
