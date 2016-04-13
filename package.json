@@ -11,9 +11,12 @@
     "test": "npm run unit",
     "unit": "karma start --single-run",
     "tdd": "karma start",
-    "serve": "concurrently \"npm run build\" \"http-server public\""
+    "serve": "concurrently \"npm run build\" \"http-server public\"",
+    "compile": "babel src --ignore .spec.js --out-dir lib",
+    "compile:watch": "babel src --ignore .spec.js --out-dir lib --watch",
+    "prepublish": "npm run compile"
   },
-  "main": "/src/chomsky.js",
+  "main": "lib/chomsky.js",
   "author": "Kameron R. Sween <kameron@krsween.com>",
   "repository": "krsween/chomsky",
   "license": "MIT",
