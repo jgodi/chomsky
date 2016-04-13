@@ -33,11 +33,20 @@ export class Invariant {
         return value.toLocaleString(this.locale, {style:'currency', currency:currency });
     }
 
-    formatShortDate(utc) {
-        return moment(utc).format('l');
+    formatShortDate(date) {
+        return moment(date).format('l');
     }
 
     parseShortDate(dateStr) {
         return moment(dateStr, 'l');
     }
+
+    formatTime(time) {
+        return moment(time).format('LT');
+    }
+
+    parseTime(timeStr) {
+        return moment(timeStr, 'LT');
+    }
+
 }
