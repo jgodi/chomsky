@@ -12,7 +12,7 @@
     "unit": "karma start --single-run",
     "tdd": "karma start",
     "serve": "concurrently \"npm run build\" \"http-server public\"",
-    "compile": "babel src --ignore .spec.js --out-dir lib",
+    "compile": "babel src --i .spec.js --out-dir lib",
     "compile:watch": "babel src --ignore .spec.js --out-dir lib --watch",
     "prepublish": "npm run compile"
   },

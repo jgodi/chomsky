@@ -29,26 +29,18 @@ export class Chomsky {
 	}
 
 	setLanguage(language, translationObject = null) {
-		if (!translationObject) {
-			translationObject = this.translationsDictionary[language];
-		}
 		return new Promise((resolve, reject) => {
 			// Now, only language is required
 			if (language) {
-				if (this.currentLanguage === language) {
-					resolve();
-				} else if (translationObject) {
+				this.currentLanguage = language;
+				if (typeof translationObject == 'object') {
 					this.applyLanguage(language, translationObject);
 					resolve();
 				} else {
-					this.resolveTranslationObject(language)
-						.then(
-							translationObject => {
-								this.applyLanguage(language, translationObject);
-								resolve();
-							},
-							reason => reject(reason)
-						);
+					this.resolveTranslationObject(translationObject)
+						.then(asyncTranslationObject => {
+							this.applyLanguage(language, asyncTranslationObject);
+						});
 				}
 			} else {
 				reject('setLanguage: language is mandatory');
@@ -59,20 +51,13 @@ export class Chomsky {
 	applyLanguage(language, translationObject) {
 		this.currentLanguage = language;
 
-		//this.currentDictionary = this.dictionaryManager.dictionaries[language];
+		this.addTranslation(language, translationObject);
 
-		//this.dictionaryManager.addNewTranslation(language, translationObject);
 		this.changeHandlers.forEach((callback) => callback());
 	}
 
 	resolveTranslationObject(language) {
 		return new Promise((resolve, reject) => {
-			//var promise = ;
-
-			if (!promise || typeof promise.then !== 'function') {
-				reject('translationFetcher should return a promise');
-			}
-
 			this.translationFetcher(language)
 				.then(translationObject => {
 						if (translationObject) {
