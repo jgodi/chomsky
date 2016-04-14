@@ -8,9 +8,9 @@ export class DictionaryManager {
         this.storage = new Storage('dictionary-manager');
         this.storageKey = 'dictionary';
 
-        this.locale = window.navigator.language.split('-');
+        this.locale = window.navigator.language;
         // TODO: get this from last value used via localStorage (build preferences)
-        this.preferredLanguage = this.locale[0];
+        this.preferredLanguage = this.locale;
 
         this.initializeDictionaries(this.preferredLanguage);
     }

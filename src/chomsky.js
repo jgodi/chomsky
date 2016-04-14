@@ -1,8 +1,9 @@
+// Vendor
+//var moment = require('moment');
 // App
 import {DictionaryManager} from './dictionarymanager';
 import {AsyncLoader} from './asyncloader';
-// Vendor
-var moment = require('moment');
+import {Invariant} from './invariant';
 
 export class Chomsky {
 	constructor() {
@@ -12,6 +13,10 @@ export class Chomsky {
 		this.translationsDictionary = this.dictionaryManager.dictionaries;
 
 		this.changeHandlers = [];
+
+		this.currentLocale = this.translationsDictionary.locale;
+
+		this.invariant = new Invariant('en-US');
 	}
 
 	addTranslation(language, translation) {
@@ -32,7 +37,10 @@ export class Chomsky {
 		return new Promise((resolve, reject) => {
 			// Now, only language is required
 			if (language) {
-				this.currentLanguage = language;
+				this.currentLocale = language;
+
+				this.invariant.setLocale(this.currentLocale);
+
 				if (typeof translationObject == 'object') {
 					this.applyLanguage(language, translationObject);
 					resolve();
@@ -49,7 +57,7 @@ export class Chomsky {
 	}
 
 	applyLanguage(language, translationObject) {
-		this.currentLanguage = language;
+		this.currentLocale = language;
 
 		this.addTranslation(language, translationObject);
 
@@ -72,22 +80,16 @@ export class Chomsky {
 	}
 
 	constructDate(date, format) {
-		let dateString = '';
-		if (!format) {
-			dateString = moment(date).format('MM[/]DD[/]YYYY');
-		} else {
-			dateString = moment(date).format(format);
-		}
-		return dateString;
+		return this.invariant.formatShortDate(date);
 	}
 
-	constructCurrency(currency, denominator) {
-		return denominator + currency.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+	constructCurrency(currency, currencyCode) {
+		return this.invariant.formatCurrency(currency, currencyCode);;
 	}
 
 	translate(key, interpolation, pluralValue) {
 		let tokens = key.split('.');
-		let value = this.translationsDictionary[this.currentLanguage];
+		let value = this.translationsDictionary[this.currentLocale];
 
 		for (let i = 0; i < tokens.length && value !== undefined; i++) {
 			value = value[tokens[i]];
