@@ -10,39 +10,68 @@ describe('Class: Invariant', () => {
         let invariant = new Invariant;
         let actual = invariant.getLocale()
 
-        expect(actual).toEqual(navigator.language);
+        expect(actual).toEqual(navigator.language.toLowerCase());
     });
 
     it('locale constructor', () => {
-        let locale = "fr-CA";
+        let locale = "fr-FR";
         let invariant = new Invariant(locale);
         let actual = invariant.getLocale();
 
-        expect(actual).toEqual(locale);
+        expect(actual).toEqual(locale.toLowerCase());
+
     });
 
     it('changeLocale', () => {
-        let firstLocale = "fr-CA";
+        let firstLocale = "fr-FR";
         let secondLocale = "en-US";
         let invariant = new Invariant(firstLocale);
         invariant.setLocale(secondLocale);
         let actual = invariant.getLocale();
         
-        expect(actual).toEqual(secondLocale);
+        expect(actual).toEqual(secondLocale.toLowerCase());
     });
 
-    it('currency US format', () => {
+    it('format US number', () => {
         let invariant = new Invariant("en-US");
-        let actual = invariant.formatCurrency(123456789, 'USD');
+        let actual = invariant.formatNumber(123456789);
 
         expect(actual).toEqual('123,456,789');
     });
 
-    it('currency UK format', () => {
-        let invariant = new Invariant("en-GB");
+    it('parse US number', () => {
+        let invariant = new Invariant("en-US");
+        let actual = invariant.parseNumber('123,456,789.12');
+
+        expect(actual).toEqual(123456789.12);
+    });
+
+    it('format FR number', () => {
+        let invariant = new Invariant("fr-FR");
+        let actual = invariant.formatNumber(123456789);
+
+        expect(actual).toEqual('123 456 789');
+    });
+
+    it('praser FR number', () => {
+        let invariant = new Invariant("fr-FR");
+        let actual = invariant.parseNumber("123 456 789,12");
+
+        expect(actual).toEqual(123456789.12);
+    });
+
+    it('format US currency', () => {
+        let invariant = new Invariant("en-US");
         let actual = invariant.formatCurrency(123456789, 'USD');
 
-        expect(actual).toEqual('123.456.789');
+        expect(actual).toEqual('$123,456,789.00');
+    });
+
+    it('format FR currency', () => {
+        let invariant = new Invariant("fr-FR");
+        let actual = invariant.formatCurrency(123456789, 'USD');
+
+        expect(actual).toEqual('123 456 789,00 $US');
     });
 
     it('format short date US', () => {
@@ -54,7 +83,7 @@ describe('Class: Invariant', () => {
     });
 
     it('format short date France', () => {
-        let invariant = new Invariant('fr');
+        let invariant = new Invariant('fr-FR');
 
         let actual = invariant.formatShortDate(1360013296000);
 
@@ -62,7 +91,7 @@ describe('Class: Invariant', () => {
     });
 
     it('parse short date US', () => {
-        let invariant = new Invariant('en-us');
+        let invariant = new Invariant('en-US');
 
         let actual = invariant.parseShortDate('2/4/2013');
 
@@ -70,7 +99,7 @@ describe('Class: Invariant', () => {
     });
 
     it('parse short date France', () => {
-        let invariant = new Invariant('fr');
+        let invariant = new Invariant('fr-FR');
 
         let actual = invariant.parseShortDate('4/2/2013');
 
@@ -78,13 +107,13 @@ describe('Class: Invariant', () => {
     });
 
     it('parse short date change format', () => {
-        let invariant = new Invariant('en-us');
+        let invariant = new Invariant('en-US');
 
         let actual = invariant.parseShortDate('2/4/2013');
 
         expect(actual.utc().toDate().getTime()).toEqual(1359954000000);
 
-        invariant.setLocale('fr');
+        invariant.setLocale('fr-FR');
 
         actual = invariant.parseShortDate('4/2/2013');
 
@@ -92,7 +121,7 @@ describe('Class: Invariant', () => {
     });
 
     it('format time US', () => {
-        let invariant = new Invariant('en');
+        let invariant = new Invariant('en-US');
 
         let actual = invariant.formatTime(1460567156000);
 
@@ -100,7 +129,7 @@ describe('Class: Invariant', () => {
     })
 
     it('parse time US', () => {
-        let invariant = new Invariant('us');
+        let invariant = new Invariant('en-US');
 
         let actual = invariant.parseTime('12:15 PM');
 
@@ -111,7 +140,7 @@ describe('Class: Invariant', () => {
     })
 
     it('format time FR', () => {
-        let invariant = new Invariant('fr');
+        let invariant = new Invariant('fr-FR');
 
         let actual = invariant.formatTime(1460567156000);
 
@@ -119,7 +148,7 @@ describe('Class: Invariant', () => {
     })
 
     it('parse time FR', () => {
-        let invariant = new Invariant('fr');
+        let invariant = new Invariant('fr-FR');
 
         let actual = invariant.parseTime('13:15');
 
