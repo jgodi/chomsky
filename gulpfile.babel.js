@@ -14,18 +14,18 @@ import del from 'del';
 
 gulp.task('copy', () => {
     return gulp.src([
-            'src/index.html'
+            'demo/index.html'
         ])
         .pipe(gulp.dest('public'));
 });
 gulp.task('build', ['copy'], () => {
-    const b = browserify('src/demo.js', {debug: true})
+    const b = browserify('demo/demo.js', { debug: true })
         .transform(babelify);
     return bundle(b);
 });
 
 gulp.task('watch', () => {
-    const b = browserify('src/demo.js', assign({debug: true}, watchify.args))
+    const b = browserify('demo/demo.js', assign({ debug: true }, watchify.args))
         .transform(babelify);
     const w = watchify(b)
         .on('update', () => bundle(w))
@@ -46,7 +46,7 @@ function bundle(b) {
         })
         .pipe(source('bundle.js'))
         .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('public'));
 }

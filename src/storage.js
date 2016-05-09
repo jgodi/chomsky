@@ -1,7 +1,3 @@
-/**
- * Created by jlrutledge on 4/12/2016.
- */
-
 export class Storage {
     constructor(prefix) {
         if (typeof prefix === undefined) {
@@ -19,7 +15,6 @@ export class Storage {
             this.topLevel = {};
             this.storage = this._createDefaultImplementation();
         }
-
     }
 
     _hasLocalStorage() {
@@ -28,7 +23,7 @@ export class Storage {
             localStorage.setItem(mod, mod);
             localStorage.removeItem(mod);
             return true;
-        } catch(e) {
+        } catch (e) {
             return false;
         }
     }
@@ -39,7 +34,7 @@ export class Storage {
             sessionStorage.setItem(mod, mod);
             sessionStorage.removeItem(mod);
             return true;
-        } catch(e) {
+        } catch (e) {
             return false;
         }
     }
@@ -49,7 +44,7 @@ export class Storage {
     }
 
     _createDefaultImplementation() {
-        return  {
+        return {
             getItem: (key) => {
                 let valueStr = null;
                 if (this.topLevel[key]) {

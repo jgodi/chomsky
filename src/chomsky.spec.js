@@ -1,4 +1,4 @@
-import {Chomsky} from './chomsky';
+import { Chomsky } from './chomsky';
 
 describe('Class: Chomsky', () => {
     it('should be defined.', () => {

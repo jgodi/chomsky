@@ -1,4 +1,4 @@
-import {DictionaryManager} from './dictionarymanager';
+import { DictionaryManager } from './dictionarymanager';
 
 describe('Class: DictionaryManager', () => {
 

@@ -1,4 +1,4 @@
-import {AsyncLoader} from './asyncloader';
+import { AsyncLoader } from './asyncloader';
 
 describe('Class: AsyncLoader', () => {
 

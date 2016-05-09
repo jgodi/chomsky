@@ -26,7 +26,7 @@ var en = {
         billion: 'b',
         trillion: 't'
     },
-    ordinal : function (number) {
+    ordinal: function (number) {
         return number === 1 ? 'er' : 'e';
     },
     currency: {
@@ -45,7 +45,7 @@ var fr = {
         billion: 'b',
         trillion: 't'
     },
-    ordinal : function (number) {
+    ordinal: function (number) {
         return number === 1 ? 'er' : 'e';
     },
     currency: {
@@ -105,7 +105,7 @@ export class Invariant {
     }
 
     formatCurrency(value, currency) {
-        return value.toLocaleString(this.locale, {style:'currency', currency:currency });
+        return value.toLocaleString(this.locale, { style: 'currency', currency: currency });
     }
 
     formatShortDate(date) {

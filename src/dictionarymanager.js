@@ -1,5 +1,5 @@
 // App
-import {Storage} from './storage';
+import { Storage } from './storage';
 // Vendor
 var objectAssignDeep = require('object-assign-deep');
 
@@ -35,10 +35,11 @@ export class DictionaryManager {
             this.dictionaries[languageKey] = {};
         }
         // Add new translation to dictionary
-        this.dictionaries[languageKey] =  objectAssignDeep({}, this.dictionaries[languageKey], translations);
+        this.dictionaries[languageKey] = objectAssignDeep({}, this.dictionaries[languageKey], translations);
         // Cache translations
         this.storage.setItem(this.storageKey, this.dictionaries);
     }
+
     removeDictionary(languageKey) {
         this.dictionaries[languageKey] = {};
     }

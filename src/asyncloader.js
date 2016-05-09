@@ -9,7 +9,7 @@ export class AsyncLoader {
                     try {
                         let translationObject = JSON.parse(xhr.responseText);
                         resolve(translationObject);
-                    } catch(e) {
+                    } catch (e) {
                         let error = new Error(`Parse Error: ${e.toString()}`);
                         reject(error);
                     }

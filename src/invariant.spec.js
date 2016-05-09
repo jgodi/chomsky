@@ -2,7 +2,7 @@
  * Created by jlrutledge on 4/12/2016.
  */
 
-import {Invariant} from './invariant';
+import { Invariant } from './invariant';
 
 describe('Class: Invariant', () => {
 
@@ -28,7 +28,7 @@ describe('Class: Invariant', () => {
         let invariant = new Invariant(firstLocale);
         invariant.setLocale(secondLocale);
         let actual = invariant.getLocale();
-        
+
         expect(actual).toEqual(secondLocale.toLowerCase());
     });
 
@@ -134,7 +134,7 @@ describe('Class: Invariant', () => {
         let actual = invariant.parseTime('12:15 PM');
 
         let expected = new Date();
-        expected.setHours(12,15,0,0);
+        expected.setHours(12, 15, 0, 0);
 
         expect(actual.toDate().getTime()).toEqual(expected.getTime());
     })
@@ -153,7 +153,7 @@ describe('Class: Invariant', () => {
         let actual = invariant.parseTime('13:15');
 
         let expected = new Date();
-        expected.setHours(13,15,0,0);
+        expected.setHours(13, 15, 0, 0);
 
         expect(actual.toDate().getTime()).toEqual(expected.getTime());
     })

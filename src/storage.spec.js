@@ -1,4 +1,4 @@
-import {Storage} from './storage.js';
+import { Storage } from './storage.js';
 
 describe('LocalStorage Tests', () => {
     it('constructor', () => {
@@ -27,7 +27,7 @@ describe('LocalStorage Tests', () => {
 
         spyOn(localStorage, 'getItem').and.callFake(function (key) {
             return null;
-         });
+        });
 
         let storage = new Storage('test');
         let actaul = storage.getItem('key');
@@ -53,10 +53,10 @@ describe('LocalStorage Tests', () => {
         let storage = new Storage('test');
         let actaul = storage.getItem('key');
 
-        expect(actaul).toEqual({success:true});
+        expect(actaul).toEqual({ success: true });
     });
 
-    it("setItem", () =>{
+    it("setItem", () => {
         let setItemValue = undefined;
         spyOn(localStorage, 'setItem').and.callFake(function (key, value) {
             if (key == 'test-key') {
@@ -74,7 +74,7 @@ describe('LocalStorage Tests', () => {
 
     });
 
-    it("removeItem", () =>{
+    it("removeItem", () => {
         let removeItemCalled = false;
 
         spyOn(localStorage, 'setItem').and.callFake(function (key, value) {
@@ -93,7 +93,7 @@ describe('LocalStorage Tests', () => {
 
     });
 
-    it("clear", () =>{
+    it("clear", () => {
         let clearCalled = false;
         spyOn(localStorage, 'setItem').and.callFake(function (key, value) {
         });
@@ -181,7 +181,7 @@ describe('SessionStorage Tests', () => {
         let storage = new Storage('test');
         let actaul = storage.getItem('key');
 
-        expect(actaul).toEqual({success:true});
+        expect(actaul).toEqual({ success: true });
     });
 
     it('setItem', () => {
@@ -285,7 +285,7 @@ describe('Default Implementation Tests', () => {
     });
 
     it('getItem/setItem', () => {
-        let expectedValue = {field1: 'field1', field2:'field2'};
+        let expectedValue = { field1: 'field1', field2: 'field2' };
         let key = 'testKey';
 
         spyOn(localStorage, 'setItem').and.callFake(function (key, value) {
@@ -379,7 +379,7 @@ describe('Localstorage Implementation Tests', () => {
     });
 
     it('getItem/setItem', () => {
-        let expectedValue = {field1: 'field1', field2:'field2'};
+        let expectedValue = { field1: 'field1', field2: 'field2' };
         let key = 'testKey';
 
         localStorage.clear();
