@@ -12,13 +12,30 @@ import watchify from 'watchify';
 import babelify from 'babelify';
 import del from 'del';
 
+gulp.task('copy-i18n', ['copy-lib'], () => {
+    return gulp.src([
+            'demo/i18n/*.json'
+        ])
+        .pipe(gulp.dest('public/i18n'));
+});
+
+gulp.task('copy-lib', ['copy'], () => {
+    return gulp.src([
+            'node_modules/numeral/languages.js',
+            'node_modules/numeral/numeral.js',
+            'node_modules/moment/min/moment-with-locales.min.js'
+        ])
+        .pipe(gulp.dest('public/lib'));
+});
+
 gulp.task('copy', () => {
     return gulp.src([
             'demo/index.html'
         ])
         .pipe(gulp.dest('public'));
 });
-gulp.task('build', ['copy'], () => {
+
+gulp.task('build', ['copy-i18n'], () => {
     const b = browserify('demo/demo.js', { debug: true })
         .transform(babelify);
     return bundle(b);
@@ -37,7 +54,9 @@ gulp.task('clean', () => {
     return del('public');
 });
 
-gulp.task('default', ['copy', 'watch']);
+gulp.task('default', ['clean'], () => {
+    gulp.run(['copy-i18n', 'watch']);
+});
 
 function bundle(b) {
     return b.bundle()

@@ -1,89 +1,11 @@
-/**
- * Created by jlrutledge on 4/12/2016.
- */
+import moment from 'moment';
+import numeral from 'numeral';
 
-var moment = require('moment');
-require('moment/locale/fr');
-
-require('intl');
-
-// TODO: fix bootstrapping
-require('intl/locale-data/jsonp/en-US');
-require('intl/locale-data/jsonp/fr');
-require('intl/locale-data/jsonp/ru');
-
-var numeral = require('numeral');
-
-// TODO: fix bootstrapping
-var en = {
-    delimiters: {
-        thousands: ',',
-        decimal: '.'
-    },
-    abbreviations: {
-        thousand: 'k',
-        million: 'm',
-        billion: 'b',
-        trillion: 't'
-    },
-    ordinal: function (number) {
-        return number === 1 ? 'er' : 'e';
-    },
-    currency: {
-        symbol: '$'
-    }
-};
-numeral.language('en-us', en);
-var fr = {
-    delimiters: {
-        thousands: ' ',
-        decimal: ','
-    },
-    abbreviations: {
-        thousand: 'k',
-        million: 'm',
-        billion: 'b',
-        trillion: 't'
-    },
-    ordinal: function (number) {
-        return number === 1 ? 'er' : 'e';
-    },
-    currency: {
-        symbol: '€'
-    }
-};
-numeral.language('fr-fr', fr);
-var ru = {
-    delimiters: {
-        thousands: ' ',
-        decimal: ','
-    },
-    abbreviations: {
-        thousand: 'тыс.',
-        million: 'млн',
-        billion: 'b',
-        trillion: 't'
-    },
-    ordinal: function () {
-        // not ideal, but since in Russian it can taken on
-        // different forms (masculine, feminine, neuter)
-        // this is all we can do
-        return '.';
-    },
-    currency: {
-        symbol: 'руб.'
-    }
-};
-numeral.language('ru-ru', ru);
+// Set defaults
 
 export class Invariant {
     constructor(locale) {
-        if (locale == null) {
-            locale = navigator.language;
-        }
-
-        this.setLocale(locale);
-
+        this.setLocale(locale || navigator.language);
     }
 
     getLocale() {
@@ -93,7 +15,12 @@ export class Invariant {
     setLocale(locale) {
         this.locale = locale.toLowerCase();
         moment.locale(this.locale);
-        numeral.language(this.locale);
+
+        try {
+            numeral.language(this.locale);
+        } catch (e) {
+            // no op, local not supported with numeral
+        }
     }
 
     formatNumber(value) {
@@ -123,5 +50,4 @@ export class Invariant {
     parseTime(timeStr) {
         return moment(timeStr, 'LT');
     }
-
 }

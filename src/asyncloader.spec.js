@@ -1,7 +1,6 @@
 import { AsyncLoader } from './asyncloader';
 
 describe('Class: AsyncLoader', () => {
-
     it('should be defined', () => {
         let instance = new AsyncLoader;
         expect(instance).toBeDefined();

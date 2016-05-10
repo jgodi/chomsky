@@ -1,6 +1,3 @@
-// Vendor
-//var moment = require('moment');
-// App
 import { DictionaryManager } from './dictionarymanager';
 import { AsyncLoader } from './asyncloader';
 import { Invariant } from './invariant';
@@ -9,13 +6,9 @@ export class Chomsky {
     constructor() {
         this.dictionaryManager = new DictionaryManager;
         this.asyncLoader = new AsyncLoader;
-
         this.translationsDictionary = this.dictionaryManager.dictionaries;
-
         this.changeHandlers = [];
-
         this.currentLocale = this.translationsDictionary.locale;
-
         this.invariant = new Invariant('en-US');
     }
 
@@ -38,7 +31,6 @@ export class Chomsky {
             // Now, only language is required
             if (language) {
                 this.currentLocale = language;
-
                 this.invariant.setLocale(this.currentLocale);
 
                 if (typeof translationObject == 'object') {
@@ -58,9 +50,7 @@ export class Chomsky {
 
     applyLanguage(language, translationObject) {
         this.currentLocale = language;
-
         this.addTranslation(language, translationObject);
-
         this.changeHandlers.forEach((callback) => callback());
     }
 
@@ -85,7 +75,6 @@ export class Chomsky {
 
     constructCurrency(currency, currencyCode) {
         return this.invariant.formatCurrency(currency, currencyCode);
-        ;
     }
 
     translate(key, interpolation, pluralValue) {
@@ -144,7 +133,6 @@ export class Chomsky {
                 }
             });
         }
-
         return value;
     }
 }
