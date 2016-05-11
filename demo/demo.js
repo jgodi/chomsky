@@ -4,9 +4,9 @@ class Demo {
     constructor() {
         this.chomsky = new Chomsky;
 
-        let usLocale = 'en-US';
-        //let ukLocale = 'en-GB';
-        let frLocale = 'fr-FR';
+        const usLocale = 'en-US';
+        //const ukLocale = 'en-GB';
+        const frLocale = 'fr-FR';
 
 	    // Greeting
 	    Promise.all([
@@ -44,7 +44,7 @@ class Demo {
 
         // $$
         console.log('MONEY');
-        this.chomsky.setLanguage(usLocale, { MONEY: 'You owe: {debt:currency:USD}' });
+        this.chomsky.setLanguage('en', { MONEY: 'You owe: {debt:currency:USD}' });
         this.chomsky.setLanguage(frLocale, { MONEY: 'Vous devez: {debt:currency:EUR}' });
         console.log('\tfr-FR');
         console.log('\t\t' + this.chomsky.translate('MONEY', { debt: 10000 }));

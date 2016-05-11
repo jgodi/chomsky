@@ -113,22 +113,23 @@ export class Chomsky {
         return this.invariant.formatCurrency(currency, currencyCode);
     }
 
+	getValue(key, languageCode, variantCode) {
+		let value = '';
+		let dictionary = this.translationsDictionary[languageCode];
+		if (variantCode) {
+			dictionary = this.translationsDictionary[languageCode][variantCode];
+		}
+		let tokens = key.split('.');
+		for (let i = 0; i < tokens.length && value !== undefined; i++) {
+			value = dictionary[tokens[i]];
+		}
+		return value;
+	}
+
     translate(key, interpolation, pluralValue) {
 	    let languageCode = (this.currentLocale.split('-')[0] || '').toLowerCase();
-	    let localeCode = (this.currentLocale.split('-')[1] || '').toUpperCase();
-	    let value = this.translationsDictionary[languageCode];
-	    if (localeCode) {
-		    value = this.translationsDictionary[languageCode][localeCode];
-	    }
-
-	    let tokens = key.split('.');
-        for (let i = 0; i < tokens.length && value !== undefined; i++) {
-            value = value[tokens[i]];
-        }
-
-        if (value === undefined) {
-            value = '';
-        }
+	    let variantCode = (this.currentLocale.split('-')[1] || '').toUpperCase();
+	    let value = this.getValue(key, languageCode, variantCode) || this.getValue(key, languageCode);
 
         // Handle pluralization
         if (typeof value === 'object') {

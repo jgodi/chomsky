@@ -23,7 +23,7 @@ export class DictionaryManager {
 	 */
     addNewTranslation(languageKey, translations) {
 		let languageCode = (languageKey.split('-')[0] || '').toLowerCase();
-		let localeCode = (languageKey.split('-')[1] || '').toUpperCase();
+		let variantCode = (languageKey.split('-')[1] || '').toUpperCase();
 
         if (typeof translations !== 'object') {
             throw new Error('Cannot add new \'translations\' of this type.');
@@ -35,11 +35,11 @@ export class DictionaryManager {
             this.dictionaries[languageCode] = {};
         }
 		// Handle locales
-		if (localeCode) {
-			if (!this.dictionaries[languageCode].hasOwnProperty(localeCode)) {
-				this.dictionaries[languageCode][localeCode] = {};
+		if (variantCode) {
+			if (!this.dictionaries[languageCode].hasOwnProperty(variantCode)) {
+				this.dictionaries[languageCode][variantCode] = {};
 			}
-			this.dictionaries[languageCode][localeCode] = mergeDeep({}, this.dictionaries[languageCode][localeCode], translations);
+			this.dictionaries[languageCode][variantCode] = mergeDeep({}, this.dictionaries[languageCode][variantCode], translations);
 		} else {
 			// Add new translation to dictionary
 			this.dictionaries[languageCode] = mergeDeep({}, this.dictionaries[languageCode], translations);
