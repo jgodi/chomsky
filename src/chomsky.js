@@ -169,6 +169,8 @@ export class Chomsky {
                             return this.constructDate(unparsedValue, key[2]);
                         case 'currency':
                             return this.constructCurrency(unparsedValue, key[2]);
+                        case 'number':
+                            return this.invariant.formatNumber(unparsedValue);
                         default:
                             return '';
                     }

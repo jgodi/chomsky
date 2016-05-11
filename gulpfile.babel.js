@@ -21,9 +21,10 @@ gulp.task('copy-i18n', ['copy-lib'], () => {
 
 gulp.task('copy-lib', ['copy'], () => {
     return gulp.src([
-            'node_modules/numeral/languages.js',
-            'node_modules/numeral/numeral.js',
-            'node_modules/moment/min/moment-with-locales.min.js'
+            'node_modules/numbro/dist/languages.js',
+            'node_modules/numbro/dist/numbro.js',
+            'node_modules/moment/min/moment-with-locales.min.js',
+            'node_modules/moment/min/moment.min.js'
         ])
         .pipe(gulp.dest('public/lib'));
 });

@@ -1,8 +1,4 @@
-import moment from 'moment';
-import numeral from 'numeral';
-
 // Set defaults
-
 export class Invariant {
     constructor(locale) {
         this.setLocale(locale || navigator.language);
@@ -13,26 +9,21 @@ export class Invariant {
     }
 
     setLocale(locale) {
-        this.locale = locale.toLowerCase();
+        this.locale = locale;
         moment.locale(this.locale);
-
-        try {
-            numeral.language(this.locale);
-        } catch (e) {
-            // no op, local not supported with numeral
-        }
+        numbro.setCulture(this.locale);
     }
 
     formatNumber(value) {
-        return value.toLocaleString(this.locale);
+        return numbro(value).format();
     }
 
     parseNumber(numberStr) {
-        return numeral().unformat(numberStr);
+        return numbro(numberStr).unformat();
     }
 
-    formatCurrency(value, currency) {
-        return value.toLocaleString(this.locale, { style: 'currency', currency: currency });
+    formatCurrency(value, customFormat) {
+        return numbro(value).formatCurrency(customFormat || '')
     }
 
     formatShortDate(date) {
