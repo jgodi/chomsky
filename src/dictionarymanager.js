@@ -44,8 +44,6 @@ export class DictionaryManager {
 			// Add new translation to dictionary
 			this.dictionaries[languageCode] = mergeDeep({}, this.dictionaries[languageCode], translations);
 		}
-
-		console.log(this.dictionaries);
     }
 
 	/**

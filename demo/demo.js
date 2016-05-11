@@ -9,16 +9,19 @@ class Demo {
         let frLocale = 'fr-FR';
 
 	    // Greeting
-	    this.chomsky.setLanguage(usLocale, './i18n/en.json').then(() => {
+	    Promise.all([
+		    this.chomsky.setLanguage(usLocale, './i18n/en.json'),
+		    this.chomsky.setLanguage(frLocale, './i18n/fr.json')
+	    ]).then(() => {
 		    console.log('GREETING');
 		    console.log('\ten-US');
+		    this.chomsky.setLanguage(usLocale);
 		    console.log('\t\t' + this.chomsky.translate('GREETING', { name: 'John' }));
-	    });
-	    this.chomsky.setLanguage(frLocale, './i18n/fr.json').then(() => {
+		    this.chomsky.setLanguage(frLocale);
 		    console.log('\tfr-FR');
 		    console.log('\t\t' + this.chomsky.translate('GREETING', { name: 'John' }));
-	    });
 
+	    });
 
         // Goodbye
         console.log('GOODBYE');
