@@ -5,13 +5,23 @@ import { Invariant } from './invariant';
 export class Chomsky {
     constructor() {
         this.dictionaryManager = new DictionaryManager;
-        this.asyncLoader = new AsyncLoader;
-        this.translationsDictionary = this.dictionaryManager.dictionaries;
-        this.changeHandlers = [];
-        this.currentLocale = this.translationsDictionary.locale;
-        this.invariant = new Invariant('en-US');
+
+	    this.asyncLoader = new AsyncLoader;
+
+	    this.translationsDictionary = this.dictionaryManager.dictionaries;
+
+	    this.changeHandlers = [];
+
+	    this.currentLocale = this.translationsDictionary.locale;
+
+	    this.invariant = new Invariant('en-US');
     }
 
+	/**
+	 * @description: private/local method for changing the dictionaryManager language.
+	 * @param language
+	 * @param translation
+	 */
     addTranslation(language, translation) {
         this.dictionaryManager.addNewTranslation(language, translation);
     }
@@ -20,40 +30,66 @@ export class Chomsky {
         return this.asyncLoader.load(url);
     }
 
+	/**
+	 * @description: This is the change handler for broadcasting translations
+	 * @param callback
+	 */
     onChange(callback) {
         if (callback && typeof callback === 'function') {
             this.changeHandlers.push(callback);
         }
     }
 
-    setLanguage(language, translationObject = null) {
+	/**
+	 * @description: public method for changing the language
+	 * @param languageKey MUST BE formatted as such: 'en-us' or 'en'
+	 * @param translationObject
+	 * @returns {Promise}
+	 */
+    setLanguage(languageKey, translationObject = null) {
         return new Promise((resolve, reject) => {
             // Now, only language is required
-            if (language) {
-                this.currentLocale = language;
-                this.invariant.setLocale(this.currentLocale);
-
-                if (typeof translationObject == 'object') {
-                    this.applyLanguage(language, translationObject);
-                    resolve();
-                } else {
-                    this.resolveTranslationObject(translationObject)
-                        .then(asyncTranslationObject => {
-                            this.applyLanguage(language, asyncTranslationObject);
-                        });
-                }
+            if (languageKey) {
+	            if ((languageKey.length > 2 && languageKey.indexOf('-') !== -1) || languageKey.length === 2) {
+		            this.currentLocale = languageKey;
+		            this.invariant.setLocale(this.currentLocale);
+		            if (typeof translationObject == 'object') {
+			            this.applyLanguage(languageKey, translationObject);
+			            resolve();
+		            } else {
+			            this.resolveTranslationObject(translationObject)
+				            .then(asyncTranslationObject => {
+					            this.applyLanguage(languageKey, asyncTranslationObject);
+					            resolve();
+				            }, error => {
+					            reject(error);
+				            });
+		            }
+	            } else {
+		            reject('setLanguage: languageKey is not structured correctly.');
+	            }
             } else {
-                reject('setLanguage: language is mandatory');
+                reject('setLanguage: languageKey is mandatory');
             }
         });
     }
 
+	/**
+	 * @description This method is the setter for the active language
+	 * @param language
+	 * @param translationObject
+	 */
     applyLanguage(language, translationObject) {
         this.currentLocale = language;
         this.addTranslation(language, translationObject);
         this.changeHandlers.forEach((callback) => callback());
     }
 
+	/**
+	 * @description This method is the async loader for loading remote translations
+	 * @param language
+	 * @returns {Promise}
+	 */
     resolveTranslationObject(language) {
         return new Promise((resolve, reject) => {
             this.translationFetcher(language)
@@ -78,9 +114,14 @@ export class Chomsky {
     }
 
     translate(key, interpolation, pluralValue) {
-        let tokens = key.split('.');
-        let value = this.translationsDictionary[this.currentLocale];
+	    let languageCode = (this.currentLocale.split('-')[0] || '').toLowerCase();
+	    let localeCode = (this.currentLocale.split('-')[1] || '').toLowerCase();
+	    let value = this.translationsDictionary[languageCode];
+	    if (localeCode) {
+		    value = this.translationsDictionary[languageCode][localeCode];
+	    }
 
+	    let tokens = key.split('.');
         for (let i = 0; i < tokens.length && value !== undefined; i++) {
             value = value[tokens[i]];
         }
