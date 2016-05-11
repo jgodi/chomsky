@@ -1,6 +1,6 @@
 import { DictionaryManager } from './dictionarymanager';
 import { AsyncLoader } from './asyncloader';
-import { Invariant } from './invariant';
+import { Formats } from './formats';
 
 export class Chomsky {
     constructor() {
@@ -14,16 +14,16 @@ export class Chomsky {
 
 	    this.currentLocale = this.translationsDictionary.locale;
 
-	    this.invariant = new Invariant('en-US');
+	    this.invariant = new Formats('en-US');
     }
 
 	/**
 	 * @description: private/local method for changing the dictionaryManager language.
-	 * @param language
+	 * @param languageCode
 	 * @param translation
 	 */
-    addTranslation(language, translation) {
-        this.dictionaryManager.addNewTranslation(language, translation);
+    addTranslation(languageCode, translation) {
+        this.dictionaryManager.addNewTranslation(languageCode, translation);
     }
 
     translationFetcher(url) {

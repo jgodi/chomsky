@@ -1,5 +1,5 @@
 // Set defaults
-export class Invariant {
+export class Formats {
     constructor(locale) {
         this.setLocale(locale || navigator.language);
     }
@@ -28,17 +28,5 @@ export class Invariant {
 
     formatDate(date, format) {
         return moment(date).format((format || 'l'));
-    }
-
-    parseShortDate(dateStr) {
-        return moment(dateStr, 'l');
-    }
-
-    formatTime(time) {
-        return moment(time).format('LT');
-    }
-
-    parseTime(timeStr) {
-        return moment(timeStr, 'LT');
     }
 }

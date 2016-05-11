@@ -1,4 +1,4 @@
-import { Invariant } from './invariant';
+import { Formats } from './formats';
 
 describe('Class: Invariant', () => {
     it('Empty constructor', () => {
