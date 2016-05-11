@@ -115,7 +115,7 @@ export class Chomsky {
 
     translate(key, interpolation, pluralValue) {
 	    let languageCode = (this.currentLocale.split('-')[0] || '').toLowerCase();
-	    let localeCode = (this.currentLocale.split('-')[1] || '').toLowerCase();
+	    let localeCode = (this.currentLocale.split('-')[1] || '').toUpperCase();
 	    let value = this.translationsDictionary[languageCode];
 	    if (localeCode) {
 		    value = this.translationsDictionary[languageCode][localeCode];
