@@ -26,8 +26,8 @@ export class Invariant {
         return numbro(value).formatCurrency(customFormat || '')
     }
 
-    formatShortDate(date) {
-        return moment(date).format('l');
+    formatDate(date, format) {
+        return moment(date).format((format || 'l'));
     }
 
     parseShortDate(dateStr) {

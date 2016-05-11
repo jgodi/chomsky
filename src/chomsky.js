@@ -106,7 +106,7 @@ export class Chomsky {
     }
 
     constructDate(date, format) {
-        return this.invariant.formatShortDate(date);
+        return this.invariant.formatDate(date, format);
     }
 
     constructCurrency(currency, currencyCode) {
