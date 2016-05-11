@@ -14,7 +14,7 @@ export class Chomsky {
 
 	    this.currentLocale = this.translationsDictionary.locale;
 
-	    this.invariant = new Formats('en-US');
+	    this.formats = new Formats('en-US');
     }
 
 	/**
@@ -52,7 +52,7 @@ export class Chomsky {
             if (languageKey) {
 	            if ((languageKey.length > 2 && languageKey.indexOf('-') !== -1) || languageKey.length === 2) {
 		            this.currentLocale = languageKey;
-		            this.invariant.setLocale(this.currentLocale);
+		            this.formats.setLocale(this.currentLocale);
 		            if (typeof translationObject == 'object') {
 			            this.applyLanguage(languageKey, translationObject);
 			            resolve();
@@ -81,7 +81,12 @@ export class Chomsky {
 	 */
     applyLanguage(language, translationObject) {
         this.currentLocale = language;
-        this.addTranslation(language, translationObject);
+		// Handle overrides
+		if (translationObject && translationObject.hasOwnProperty('formats')) {
+			this.formats.override(translationObject.formats);
+			delete translationObject['formats'];
+		}
+		this.addTranslation(language, translationObject);
         this.changeHandlers.forEach((callback) => callback());
     }
 
@@ -106,11 +111,11 @@ export class Chomsky {
     }
 
     constructDate(date, format) {
-        return this.invariant.formatDate(date, format);
+        return this.formats.formatDate(date, format);
     }
 
     constructCurrency(currency, currencyCode) {
-        return this.invariant.formatCurrency(currency, currencyCode);
+        return this.formats.formatCurrency(currency, currencyCode);
     }
 
 	getValue(key, languageCode, variantCode) {
@@ -170,7 +175,7 @@ export class Chomsky {
                         case 'currency':
                             return this.constructCurrency(unparsedValue, key[2]);
                         case 'number':
-                            return this.invariant.formatNumber(unparsedValue);
+                            return this.formats.formatNumber(unparsedValue);
                         default:
                             return '';
                     }

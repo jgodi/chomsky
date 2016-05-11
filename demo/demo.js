@@ -25,8 +25,8 @@ class Demo {
 
         // Goodbye
         console.log('GOODBYE');
-        this.chomsky.setLanguage(usLocale, { GOODBYE: 'Goodbye, {name}.' });
-        this.chomsky.setLanguage(frLocale, { GOODBYE: 'Au Revoir, {name}.' });
+        this.chomsky.setLanguage(usLocale, { GOODBYE: 'Goodbye, {name}.', formats: { currency: { denomination: '¢' } } });
+        this.chomsky.setLanguage(frLocale, { GOODBYE: 'Au Revoir, {name}.', formats: { currency: { denomination: '$' } } });
         console.log('\tfr-FR');
         console.log('\t\t' + this.chomsky.translate('GOODBYE', { name: 'John' }));
         this.chomsky.setLanguage(usLocale);

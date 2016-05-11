@@ -4,6 +4,10 @@ export class Formats {
         this.setLocale(locale || navigator.language);
     }
 
+	override(formatOverrides) {
+		console.log(formatOverrides);
+	}
+
     getLocale() {
         return this.locale;
     }
