@@ -4,16 +4,11 @@ import { Formats } from './formats';
 
 export class Chomsky {
     constructor(locale) {
-        this.dictionaryManager = new DictionaryManager(locale);
-
+	    this.dictionaryManager = new DictionaryManager(locale);
 	    this.asyncLoader = new AsyncLoader;
-
 	    this.translationsDictionary = this.dictionaryManager.dictionaries;
-
 	    this.changeHandlers = [];
-
 	    this.currentLocale = this.dictionaryManager.locale;
-
 	    this.formats = new Formats(this.currentLocale);
     }
 
@@ -110,6 +105,13 @@ export class Chomsky {
         });
     }
 
+	/**
+	 *
+	 * @param key
+	 * @param languageCode
+	 * @param variantCode
+	 * @returns {string}
+	 */
 	getValue(key, languageCode, variantCode) {
 		let value = '';
 		let dictionary = this.translationsDictionary[languageCode];
@@ -123,6 +125,13 @@ export class Chomsky {
 		return value;
 	}
 
+	/**
+	 * @name translate
+	 * @param key
+	 * @param interpolation
+	 * @param pluralValue
+	 * @returns {string}
+	 */
     translate(key, interpolation, pluralValue) {
 	    let languageCode = (this.currentLocale.split('-')[0] || '').toLowerCase();
 	    let variantCode = (this.currentLocale.split('-')[1] || '').toUpperCase();
@@ -174,6 +183,11 @@ export class Chomsky {
                 }
             });
         }
+
+		// Return the key if no value is present.
+		if (!value) {
+			value = key;
+		}
         return value;
     }
 }
