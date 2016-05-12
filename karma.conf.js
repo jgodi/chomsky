@@ -40,7 +40,7 @@ module.exports = function (config) {
             suppressErrorSummary: true,
             suppressFailed: false,
             suppressPassed: false,
-            suppressSkipped: true,
+            suppressSkipped: false,
             showSpecTiming: true
         },
 
