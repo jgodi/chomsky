@@ -52,6 +52,5 @@ class Demo {
         console.log('\ten-US');
         console.log('\t\t' + this.chomsky.translate('MONEY', { debt: 10000 }));
     }
-
 }
 let demo = new Demo;

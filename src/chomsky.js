@@ -3,8 +3,8 @@ import { AsyncLoader } from './asyncloader';
 import { Formats } from './formats';
 
 export class Chomsky {
-    constructor() {
-        this.dictionaryManager = new DictionaryManager;
+    constructor(locale) {
+        this.dictionaryManager = new DictionaryManager(locale);
 
 	    this.asyncLoader = new AsyncLoader;
 
@@ -12,18 +12,18 @@ export class Chomsky {
 
 	    this.changeHandlers = [];
 
-	    this.currentLocale = this.translationsDictionary.locale;
+	    this.currentLocale = this.dictionaryManager.locale;
 
-	    this.formats = new Formats('en-US');
+	    this.formats = new Formats(this.currentLocale);
     }
 
 	/**
 	 * @description: private/local method for changing the dictionaryManager language.
 	 * @param languageCode
-	 * @param translation
+	 * @param translations
 	 */
-    addTranslation(languageCode, translation) {
-        this.dictionaryManager.addNewTranslation(languageCode, translation);
+    addTranslation(languageCode, translations) {
+        this.dictionaryManager.addNewTranslation(languageCode, translations);
     }
 
     translationFetcher(url) {
@@ -110,14 +110,6 @@ export class Chomsky {
         });
     }
 
-    constructDate(date, format) {
-        return this.formats.formatDate(date, format);
-    }
-
-    constructCurrency(currency, currencyCode) {
-        return this.formats.formatCurrency(currency, currencyCode);
-    }
-
 	getValue(key, languageCode, variantCode) {
 		let value = '';
 		let dictionary = this.translationsDictionary[languageCode];
@@ -172,9 +164,9 @@ export class Chomsky {
                 let unparsedValue = interpolation[params[0]];
                 switch (params[1]) {
                     case 'date':
-                        return this.constructDate(unparsedValue, params[2]);
+                        return this.formats.formatDate(unparsedValue, params[2]);
                     case 'currency':
-                        return this.constructCurrency(unparsedValue, params[2]);
+                        return this.formats.formatCurrency(unparsedValue, params[2]);
                     case 'number':
                         return this.formats.formatNumber(unparsedValue);
                     default:

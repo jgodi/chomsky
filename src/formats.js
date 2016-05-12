@@ -5,7 +5,7 @@ export class Formats {
     }
 
 	override(formatOverrides) {
-		console.log(formatOverrides);
+		//console.log(formatOverrides);
 	}
 
     getLocale() {

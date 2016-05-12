@@ -1,8 +1,8 @@
 import { mergeDeep } from './object-assign-deep';
 
 export class DictionaryManager {
-    constructor() {
-        this.locale = window.navigator.language;
+    constructor(locale) {
+        this.locale = locale || window.navigator.language;
 	    // By default initialize with browser default
         this.initializeDictionaries(this.locale);
     }
@@ -21,7 +21,7 @@ export class DictionaryManager {
 	 * @param languageKey
 	 * @param translations
 	 */
-    addNewTranslation(languageKey, translations) {
+    addNewTranslation(languageKey, ...translations) {
 		let languageCode = (languageKey.split('-')[0] || '').toLowerCase();
 		let variantCode = (languageKey.split('-')[1] || '').toUpperCase();
 
@@ -34,16 +34,19 @@ export class DictionaryManager {
             // Create new dictionary
             this.dictionaries[languageCode] = {};
         }
-		// Handle locales
-		if (variantCode) {
-			if (!this.dictionaries[languageCode].hasOwnProperty(variantCode)) {
-				this.dictionaries[languageCode][variantCode] = {};
+
+		translations.forEach(translation => {
+			// Handle locales
+			if (variantCode) {
+				if (!this.dictionaries[languageCode].hasOwnProperty(variantCode)) {
+					this.dictionaries[languageCode][variantCode] = {};
+				}
+				this.dictionaries[languageCode][variantCode] = mergeDeep({}, this.dictionaries[languageCode][variantCode], translation);
+			} else {
+				// Add new translation to dictionary
+				this.dictionaries[languageCode] = mergeDeep({}, this.dictionaries[languageCode], translation);
 			}
-			this.dictionaries[languageCode][variantCode] = mergeDeep({}, this.dictionaries[languageCode][variantCode], translations);
-		} else {
-			// Add new translation to dictionary
-			this.dictionaries[languageCode] = mergeDeep({}, this.dictionaries[languageCode], translations);
-		}
+		});
     }
 
 	/**

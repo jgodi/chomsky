@@ -8,13 +8,12 @@ describe('Class: DictionaryManager', () => {
 	});
 
 	it('should initialize with a locale and default dictionary when no local is specified.', () => {
-
 		expect(dictionaryManager.locale).toBeDefined();
 	    expect(dictionaryManager.locale).toBe('en-US');
 	    expect(dictionaryManager.dictionaries.en.US).toBeDefined();
 	});
 	// TODO: add this too
-	xit('should initialize with a locale and default dictionary when a local is specified.', () => {
+	it('should initialize with a locale and default dictionary when a local is specified.', () => {
 		let dictionaryManager = new DictionaryManager('en-GB');
 		expect(dictionaryManager.locale).toBeDefined();
 		expect(dictionaryManager.locale).toBe('en-GB');
@@ -75,7 +74,7 @@ describe('Class: DictionaryManager', () => {
 			expect(dictionaryManager.dictionaries.en.US.pageOne.componentOne.label).toBe('Component One');
 			expect(dictionaryManager.dictionaries.en.US.pageOne.componentTwo.label).toBe('Component Two');
 		});
-		xit('should merge complex translations to the language dictionary and allow multiple translations at once.', () => {
+		it('should merge complex translations to the language dictionary and allow multiple translations at once.', () => {
 			expect(dictionaryManager.dictionaries.en.US).toBeDefined();
 			let mockTranslationOne = {
 				pageOne: {
@@ -96,6 +95,10 @@ describe('Class: DictionaryManager', () => {
 			expect(dictionaryManager.dictionaries.en.US.pageOne.greeting).toBe('Hello');
 			expect(dictionaryManager.dictionaries.en.US.pageOne.componentOne.label).toBe('Component One');
 			expect(dictionaryManager.dictionaries.en.US.pageOne.componentTwo.label).toBe('Component Two');
+		});
+
+		xit('should only allow 3 translations at a time.', () => {
+			// TODO:
 		});
 	});
 });

@@ -15,6 +15,9 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             'test/init.js',
+            'node_modules/moment/min/moment-with-locales.min.js',
+            'node_modules/numbro/dist/numbro.min.js',
+            'node_modules/numbro/dist/languages.min.js',
             'src/**/*.spec.js'
         ],
 
