@@ -3,7 +3,6 @@ import { Chomsky } from './../src/chomsky';
 class Demo {
     constructor() {
         this.chomsky = new Chomsky;
-
         const usLocale = 'en-US';
         //const ukLocale = 'en-GB';
         const frLocale = 'fr-FR';
@@ -20,13 +19,12 @@ class Demo {
 		    this.chomsky.setLanguage(frLocale);
 		    console.log('\tfr-FR');
 		    console.log('\t\t' + this.chomsky.translate('GREETING', { name: 'John' }));
-
 	    });
 
         // Goodbye
         console.log('GOODBYE');
-        this.chomsky.setLanguage(usLocale, { GOODBYE: 'Goodbye, {name}.', formats: { currency: { denomination: '¢' } } });
-        this.chomsky.setLanguage(frLocale, { GOODBYE: 'Au Revoir, {name}.', formats: { currency: { denomination: '$' } } });
+        this.chomsky.setLanguage(usLocale, { GOODBYE: 'Goodbye, {name}.', formats: { currency: { display: '($ 0.00 a)' } } });
+        this.chomsky.setLanguage(frLocale, { GOODBYE: 'Au Revoir, {name}.', formats: { currency: { display: '($ 0.00 a)' } } });
         console.log('\tfr-FR');
         console.log('\t\t' + this.chomsky.translate('GOODBYE', { name: 'John' }));
         this.chomsky.setLanguage(usLocale);
@@ -44,13 +42,13 @@ class Demo {
 
         // $$
         console.log('MONEY');
-        this.chomsky.setLanguage('en', { MONEY: 'You owe: {debt:currency:USD}' });
-        this.chomsky.setLanguage(frLocale, { MONEY: 'Vous devez: {debt:currency:EUR}' });
+        this.chomsky.setLanguage('en', { MONEY: 'You owe: {debt:currency}' });
+        this.chomsky.setLanguage(frLocale, { MONEY: 'Vous devez: {debt:currency}' });
         console.log('\tfr-FR');
-        console.log('\t\t' + this.chomsky.translate('MONEY', { debt: 10000 }));
+        console.log('\t\t' + this.chomsky.translate('MONEY', { debt: 123456.1 }));
         this.chomsky.setLanguage(usLocale);
         console.log('\ten-US');
-        console.log('\t\t' + this.chomsky.translate('MONEY', { debt: 10000 }));
+        console.log('\t\t' + this.chomsky.translate('MONEY', { debt: 123456.1 }));
     }
 }
 let demo = new Demo;
