@@ -158,7 +158,7 @@ export class Chomsky {
         }
 
         // Handle interpolation
-        if (interpolation) {
+        if (interpolation && value) {
             value = value.replace(/{([^}]*)}/gi, (m, param) => {
                 let key = param.split(':');
                 if (key.length === 1) {
