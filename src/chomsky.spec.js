@@ -29,8 +29,13 @@ describe('Class: Chomsky', () => {
 		beforeEach(() => {
 	        chomsky = new Chomsky;
 	    });
-		it('should be defined.', () => {
-	        expect(chomsky.addTranslation).toBeDefined();
+		it('should add a new translation to the DictionaryManager.', () => {
+			expect(chomsky.addTranslation).toBeDefined();
+			spyOn(chomsky.dictionaryManager, 'addNewTranslation').and.callThrough();
+			chomsky.addTranslation('en-US', { greeting: 'Hello' });
+			expect(chomsky.dictionaryManager.addNewTranslation).toHaveBeenCalledWith('en-US', { greeting: 'Hello' });
+			expect(chomsky.translationsDictionary.en.US.greeting).toBe('Hello');
+			expect(chomsky.currentLocale).toBe('en-US');
 	    });
 	});
 
@@ -39,18 +44,12 @@ describe('Class: Chomsky', () => {
 		beforeEach(() => {
 			chomsky = new Chomsky;
 		});
-		it('should be defined.', () => {
+		it('should call the load method of the AsyncLoader.', () => {
 			expect(chomsky.translationFetcher).toBeDefined();
-		});
-	});
-
-	describe('Function: addTranslation(languageCode, translation)', () => {
-		let chomsky;
-		beforeEach(() => {
-			chomsky = new Chomsky;
-		});
-		it('should be defined.', () => {
-			expect(chomsky.addTranslation).toBeDefined();
+			spyOn(chomsky.asyncLoader, 'load').and.callFake(() => {});
+			chomsky.translationFetcher('url');
+			expect(chomsky.asyncLoader.load).toHaveBeenCalledWith('url');
+			expect(chomsky.asyncLoader.load).toHaveBeenCalledTimes(1);
 		});
 	});
 
@@ -69,8 +68,9 @@ describe('Class: Chomsky', () => {
 		beforeEach(() => {
 			chomsky = new Chomsky;
 		});
-		it('should be defined.', () => {
+		it('should be defined.', done => {
 			expect(chomsky.setLanguage).toBeDefined();
+			done();
 		});
 	});
 
@@ -106,11 +106,97 @@ describe('Class: Chomsky', () => {
 
 	describe('Function: translate(key, interpolation, pluralValue)', () => {
 		let chomsky;
+		let key = 'greeting';
+
 		beforeEach(() => {
 			chomsky = new Chomsky;
+			let frenchTranslation = {
+				greeting: 'Bonjour',
+				farewell: 'Au revoir, {name}.',
+				birthday: 'Joyeux anniversaire est, {dob:date}.',
+				reminder: 'Votre réunion est {meeting:date:ddd}.'
+			};
+			let usTranslation = {
+				greeting: 'Hello',
+				farewell: 'Goodbye, {name}.',
+				birthday: 'Happy birthday is, {dob:date}.',
+				reminder: 'Your meeting is on {meeting:date:ddd}.'
+			};
+			chomsky.setLanguage('fr', frenchTranslation);
+			chomsky.setLanguage('en', usTranslation);
 		});
-		it('should be defined.', () => {
+
+		it('should translate a string.', () => {
 			expect(chomsky.translate).toBeDefined();
+			chomsky.setLanguage('en');
+			expect(chomsky.translate(key)).toBe('Hello');
+			chomsky.setLanguage('fr');
+			expect(chomsky.translate(key)).toBe('Bonjour');
+		});
+
+		it('should fail-over from the local into the language.', () => {
+			expect(chomsky.translate).toBeDefined();
+			chomsky.setLanguage('fr-FR');
+			expect(chomsky.translate(key)).toBe('Bonjour');
+			chomsky.setLanguage('en-US');
+			expect(chomsky.translate(key)).toBe('Hello');
+		});
+
+		it('should return the key when the translation is not available.', () => {
+			expect(chomsky.translate).toBeDefined();
+			chomsky.setLanguage('fr');
+			expect(chomsky.translate(key + '_')).toBe('greeting_');
+			chomsky.setLanguage('en');
+			expect(chomsky.translate(key + '_')).toBe('greeting_');
+		});
+
+		it('should resolve dynamic variables inside of strings.', () => {
+			expect(chomsky.translate).toBeDefined();
+			chomsky.setLanguage('fr');
+			let mockDynamicValues = { name: 'Mary' };
+			expect(chomsky.translate('farewell', mockDynamicValues)).toBe('Au revoir, Mary.');
+			chomsky.setLanguage('en');
+			expect(chomsky.translate('farewell', mockDynamicValues)).toBe('Goodbye, Mary.');
+		});
+
+		it('should resolve dynamic date variables inside of strings.', () => {
+			expect(chomsky.translate).toBeDefined();
+			chomsky.setLanguage('fr');
+			let mockDynamicValues = { dob: new Date(1776, 6, 4) };
+			// French
+			let frenchTranslation = chomsky.translate('birthday', mockDynamicValues);
+			let frenchDate = frenchTranslation.split(',')[1].split('/');
+			expect(frenchTranslation).toContain('Joyeux anniversaire est,');
+			expect(frenchDate.length).toBe(3);
+			expect(frenchDate[0]).toContain('4');
+			expect(frenchDate[1]).toContain('7');
+			expect(frenchDate[2]).toContain('1776');
+			// English
+			chomsky.setLanguage('en');
+			let englishTranslation = chomsky.translate('birthday', mockDynamicValues);
+			let englishDate = englishTranslation.split(',')[1].split('/');
+			expect(englishTranslation).toContain('Happy birthday is');
+			expect(englishDate.length).toBe(3);
+			expect(englishDate[0]).toContain('7');
+			expect(englishDate[1]).toContain('4');
+			expect(englishDate[2]).toContain('1776');
+		});
+
+		it('should resolve dynamic date variables with custom formatting inside of strings.', () => {
+			expect(chomsky.translate).toBeDefined();
+			chomsky.setLanguage('fr');
+			let mockDynamicValues = { meeting: new Date(1776, 6, 4) };
+			// French
+			let frenchTranslation = chomsky.translate('reminder', mockDynamicValues);
+			let frenchDate = frenchTranslation.split('on ')[1];
+			expect(frenchTranslation).toContain('Votre réunion est');
+			expect(frenchDate.toLowerCase()).toContain('jeu');
+			// English
+			chomsky.setLanguage('en');
+			let englishTranslation = chomsky.translate('reminder', mockDynamicValues);
+			let englishDate = englishTranslation.split('on ')[1];
+			expect(englishTranslation).toContain('Your meeting is on');
+			expect(englishDate.toLowerCase()).toContain('thu');
 		});
 	});
 });
