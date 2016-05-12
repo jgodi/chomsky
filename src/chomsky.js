@@ -160,25 +160,25 @@ export class Chomsky {
         // Handle interpolation
         if (interpolation && value) {
             value = value.replace(/{([^}]*)}/gi, (m, param) => {
-                let key = param.split(':');
-                if (key.length === 1) {
+                let params = param.split(':');
+                if (params.length === 1) {
                     let match = '';
                     if (interpolation.hasOwnProperty(param)) {
                         match = interpolation[param];
                     }
                     return match;
-                } else {
-                    let unparsedValue = interpolation[key[0]];
-                    switch (key[1]) {
-                        case 'date':
-                            return this.constructDate(unparsedValue, key[2]);
-                        case 'currency':
-                            return this.constructCurrency(unparsedValue, key[2]);
-                        case 'number':
-                            return this.formats.formatNumber(unparsedValue);
-                        default:
-                            return '';
-                    }
+                }
+
+                let unparsedValue = interpolation[params[0]];
+                switch (params[1]) {
+                    case 'date':
+                        return this.constructDate(unparsedValue, params[2]);
+                    case 'currency':
+                        return this.constructCurrency(unparsedValue, params[2]);
+                    case 'number':
+                        return this.formats.formatNumber(unparsedValue);
+                    default:
+                        return '';
                 }
             });
         }
