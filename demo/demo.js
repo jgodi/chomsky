@@ -68,6 +68,30 @@ class Demo {
 	    this.chomsky.setLanguage(usLocale);
 	    console.log('\ten-US');
 	    console.log('\t\t' + this.chomsky.translate('num', { people: 1234567 }));
+
+
+	    // Pluralization
+	    console.log('PLURALIZATION');
+	    this.chomsky.setLanguage(usLocale, { messages: {
+		    zero: 'No messages.',
+		    1: 'Only 1 message',
+		    many: 'A lot of messages.'
+	    }});
+	    console.log('\ten-US');
+	    console.log('\t\t' + this.chomsky.translate('messages', 0));
+	    console.log('\t\t' + this.chomsky.translate('messages', 1));
+	    console.log('\t\t' + this.chomsky.translate('messages', 45));
+	    this.chomsky.setLanguage(frLocale, { messages: {
+		    zero: 'Pas de messages.',
+		    1: 'Seulement 1 message',
+		    many: 'Un grand nombre de messages.'
+	    }});
+	    console.log('\tfr-FR');
+	    console.log('\t\t' + this.chomsky.translate('messages', 0));
+	    console.log('\t\t' + this.chomsky.translate('messages', 1));
+	    console.log('\t\t' + this.chomsky.translate('messages', 45));
+
+
     }
 }
 let demo = new Demo;

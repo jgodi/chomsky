@@ -37,7 +37,7 @@ export class Chomsky {
 
 	/**
 	 * @description: public method for changing the language
-	 * @param languageKey MUST BE formatted as such: 'en-us' or 'en'
+	 * @param languageKey MUST BE formatted as such: 'en-US' or 'en'
 	 * @param translationObject
 	 * @returns {Promise}
 	 */
@@ -136,21 +136,20 @@ export class Chomsky {
 	 * @param pluralValue
 	 * @returns {string}
 	 */
-    translate(key, interpolation, pluralValue) {
+    translate(key, interpolation) {
 	    let languageCode = (this.currentLocale.split('-')[0] || '').toLowerCase();
 	    let variantCode = (this.currentLocale.split('-')[1] || '').toUpperCase();
 	    let value = this.getValue(key, languageCode, variantCode) || this.getValue(key, languageCode);
-
         // Handle pluralization
         if (typeof value === 'object') {
-            if (typeof pluralValue === 'number') {
-                let pluralization = value;
+            if (typeof interpolation === 'number') {
+	            let pluralization = value;
                 // If pluralValue holds the number `X`, check whether `X` is a key in pluralization.
                 // If it is, use the phrase of `X`. Otherwise, use `zero` or `many`.
-                if (pluralization.hasOwnProperty(pluralValue)) {
-                    value = pluralization[pluralValue];
+                if (pluralization.hasOwnProperty(interpolation)) {
+                    value = pluralization[interpolation];
                 } else {
-                    if (pluralValue === 0) {
+                    if (interpolation === 0) {
                         value = pluralization.zero;
                     } else {
                         // pluralValue is a number and not equals to 0, therefore pluralValue > 0
@@ -173,7 +172,6 @@ export class Chomsky {
                     }
                     return match;
                 }
-
                 let unparsedValue = interpolation[params[0]];
                 switch (params[1]) {
                     case 'date':
@@ -189,10 +187,7 @@ export class Chomsky {
         }
 
 		// Return the key if no value is present.
-		if (!value) {
-			value = key;
-		}
-        return value;
+        return value || key;
     }
 }
 
