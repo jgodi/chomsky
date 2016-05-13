@@ -177,11 +177,11 @@ export class Chomsky {
                 let unparsedValue = interpolation[params[0]];
                 switch (params[1]) {
                     case 'date':
-                        return this.formats.formatDate(unparsedValue, (params[2] || undefined), params[3]);
+                        return this.formats.formatDate(unparsedValue, (params[2] || undefined), (params[3] || undefined));
                     case 'currency':
-                        return this.formats.formatCurrency(unparsedValue, params[2]);
+                        return this.formats.formatCurrency(unparsedValue, (params[2] || undefined), (params[3] || undefined));
                     case 'number':
-                        return this.formats.formatNumber(unparsedValue);
+                        return this.formats.formatNumber(unparsedValue, (params[2] || undefined), (params[3] || undefined));
                     default:
                         return '';
                 }

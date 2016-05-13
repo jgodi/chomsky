@@ -58,6 +58,16 @@ class Demo {
         this.chomsky.setLanguage(usLocale);
         console.log('\ten-US');
         console.log('\t\t' + this.chomsky.translate('MONEY', { debt: 123456.1 }));
+
+	    // Number
+	    console.log('NUMBER');
+	    this.chomsky.setLanguage(usLocale, { num: 'There are {people:number:0,0.0000} things' });
+	    this.chomsky.setLanguage(frLocale, { num: 'Il y a {people:number:0,0.0000} choses' });
+	    console.log('\tfr-FR');
+	    console.log('\t\t' + this.chomsky.translate('num', { people: 1234567 }));
+	    this.chomsky.setLanguage(usLocale);
+	    console.log('\ten-US');
+	    console.log('\t\t' + this.chomsky.translate('num', { people: 1234567 }));
     }
 }
 let demo = new Demo;

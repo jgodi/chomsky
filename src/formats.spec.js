@@ -97,7 +97,7 @@ describe('Class: Formats', () => {
 		});
 	});
 
-    describe('Function: formatCurrency(value, customFormat)', () => {
+    describe('Function: formatCurrency(value, format, locale)', () => {
 	    it('should format US currency', () => {
 		    let formats = new Formats('en-US');
 		    let actual = formats.formatCurrency(1234567.89);
@@ -106,10 +106,7 @@ describe('Class: Formats', () => {
 
 	    it('should format US currency with custom override', () => {
 		    let formats = new Formats('en-US');
-		    let customFormat = {
-			    format: '0[.]00'
-		    };
-		    let actual = formats.formatCurrency(1234567.89, customFormat);
+		    let actual = formats.formatCurrency(1234567.89, '0[.]00');
 		    expect(actual).toEqual('$1234567.89');
 	    });
 
@@ -121,15 +118,12 @@ describe('Class: Formats', () => {
 
 	    it('should allow a format US currency even in FR locale', () => {
 		    let formats = new Formats('fr-FR');
-		    let customFormat = {
-			    locale: 'en-US'
-		    };
-		    let actual = formats.formatCurrency(1234567.89, customFormat);
+		    let actual = formats.formatCurrency(1234567.89, undefined, 'en-US');
 		    expect(actual).toEqual('$1,234,567.89');
 	    });
     });
 
-	describe('Function: formatDate(date, format)', () => {
+	describe('Function: formatDate(date, format, mask)', () => {
 
 		describe('Date String', () => {
 			it('render a US date from a date string', () => {
@@ -140,7 +134,6 @@ describe('Class: Formats', () => {
 			it('render a FR date from a date string', () => {
 				let formats = new Formats;
 				formats.setLocale('fr-FR');
-				// TODO: unsupported by moment
 				expect(formats.formatDate('1776 juillet 4', undefined, 'YYYY MMM D')).toBe('4/7/1776');
 			});
 		});
@@ -154,7 +147,6 @@ describe('Class: Formats', () => {
 			it('render a FR date from a short date', () => {
 				let formats = new Formats;
 				formats.setLocale('fr-FR');
-				// TODO: the European order isn't being respected
 				expect(formats.formatDate('4/7/1776', undefined, 'DD-MM-YYYY')).toBe('4/7/1776');
 			});
 		});

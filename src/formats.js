@@ -47,13 +47,11 @@ export class Formats {
         return numbro().unformat(numberStr);
     }
 
-	formatCurrency(value, customFormat = {}) {
+	formatCurrency(value, format, locale) {
 	    let currency;
-	    let format = customFormat.format || undefined;
-
-		if (customFormat.locale) {
+		if (locale) {
 		    let currentLocale = this.formatDefaults.locale;
-		    numbro.setCulture(customFormat.locale);
+		    numbro.setCulture(locale);
 		    currency = numbro(value).formatCurrency(format || this.formatDefaults.currency.display);
 		    numbro.setCulture(currentLocale);
 	    } else {
