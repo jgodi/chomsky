@@ -158,8 +158,6 @@ export class Chomsky {
             }
         }
 
-
-
         // Handle interpolation
         if (interpolation && value) {
             value = value.replace(/{([^}]*)}/gi, (m, param) => {
