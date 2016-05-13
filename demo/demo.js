@@ -90,8 +90,6 @@ class Demo {
 	    console.log('\t\t' + this.chomsky.translate('messages', 0));
 	    console.log('\t\t' + this.chomsky.translate('messages', 1));
 	    console.log('\t\t' + this.chomsky.translate('messages', 45));
-
-
     }
 }
 let demo = new Demo;

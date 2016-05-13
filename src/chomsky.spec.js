@@ -156,7 +156,6 @@ describe('Class: Chomsky', () => {
 			expect(chomsky.getValue).toBeDefined();
 			expect(chomsky.getValue('farewell', 'en', 'US')).toBe('Goodbye');
 		});
-
 	});
 
 	describe('Function: translate(key, interpolation, pluralValue)', () => {
@@ -169,13 +168,15 @@ describe('Class: Chomsky', () => {
 				greeting: 'Bonjour',
 				farewell: 'Au revoir, {name}.',
 				birthday: 'Joyeux anniversaire est, {dob:date}.',
-				reminder: 'Votre réunion est {meeting:date:ddd}.'
+				reminder: 'Votre réunion est {meeting:date:ddd}.',
+				placements: 'Vous avez besoin {placed:number:0,0.0000}.'
 			};
 			let usTranslation = {
 				greeting: 'Hello',
 				farewell: 'Goodbye, {name}.',
 				birthday: 'Happy birthday is, {dob:date}.',
-				reminder: 'Your meeting is on {meeting:date:ddd}.'
+				reminder: 'Your meeting is on {meeting:date:ddd}.',
+				placements: 'You need {placed:number:0,0.0000}.'
 			};
 			chomsky.setLanguage('fr', frenchTranslation);
 			chomsky.setLanguage('en', usTranslation);
@@ -252,6 +253,17 @@ describe('Class: Chomsky', () => {
 			let englishDate = englishTranslation.split('on ')[1];
 			expect(englishTranslation).toContain('Your meeting is on');
 			expect(englishDate.toLowerCase()).toContain('thu');
+		});
+
+		it('should resolve dynamic number variables with custom formatting inside of strings.', () => {
+			expect(chomsky.translate).toBeDefined();
+			chomsky.setLanguage('fr');
+			let mockDynamicValues = { placed: 123456.23 };
+			// French
+			expect(chomsky.translate('placements', mockDynamicValues)).toBe('Vous avez besoin 123,456.2300.');
+			// English
+			chomsky.setLanguage('en');
+			expect(chomsky.translate('placements', mockDynamicValues)).toBe('You need 123,456.2300.');
 		});
 
 		it('should resolve plural values.', () => {

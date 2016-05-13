@@ -144,15 +144,12 @@ export class Chomsky {
         if (typeof value === 'object') {
             if (typeof interpolation === 'number') {
 	            let pluralization = value;
-                // If pluralValue holds the number `X`, check whether `X` is a key in pluralization.
-                // If it is, use the phrase of `X`. Otherwise, use `zero` or `many`.
                 if (pluralization.hasOwnProperty(interpolation)) {
                     value = pluralization[interpolation];
                 } else {
                     if (interpolation === 0) {
                         value = pluralization.zero;
                     } else {
-                        // pluralValue is a number and not equals to 0, therefore pluralValue > 0
                         value = pluralization.many;
                     }
                 }
