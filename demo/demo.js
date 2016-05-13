@@ -75,7 +75,7 @@ class Demo {
 	    this.chomsky.setLanguage(usLocale, { messages: {
 		    zero: 'No messages.',
 		    1: 'Only 1 message',
-		    many: 'A lot of messages.'
+		    many: '{messages:number:0.0} messages.'
 	    }});
 	    console.log('\ten-US');
 	    console.log('\t\t' + this.chomsky.translate('messages', 0));
@@ -84,7 +84,7 @@ class Demo {
 	    this.chomsky.setLanguage(frLocale, { messages: {
 		    zero: 'Pas de messages.',
 		    1: 'Seulement 1 message',
-		    many: 'Un grand nombre de messages.'
+		    many: '{messages:number:0.0} messages.'
 	    }});
 	    console.log('\tfr-FR');
 	    console.log('\t\t' + this.chomsky.translate('messages', 0));

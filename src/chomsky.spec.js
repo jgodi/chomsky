@@ -272,24 +272,24 @@ describe('Class: Chomsky', () => {
 				messages: {
 					zero: 'No messages.',
 					1: 'Only 1 message',
-					many: 'A lot of messages.'
+					many: '{messages} messages.'
 				}
 			};
 			chomsky.setLanguage('en-US', mockUSPluralValues);
 			expect(chomsky.translate('messages', 0)).toBe('No messages.');
 			expect(chomsky.translate('messages', 1)).toBe('Only 1 message');
-			expect(chomsky.translate('messages', 50)).toBe('A lot of messages.');
+			expect(chomsky.translate('messages', 50)).toBe('50 messages.');
 			let mockFRPluralValues = {
 				messages: {
 					zero: 'Pas de messages.',
 					1: 'Seulement 1 message',
-					many: 'Un grand nombre de messages.'
+					many: '{messages} messages.'
 				}
 			};
 			chomsky.setLanguage('fr-FR', mockFRPluralValues);
 			expect(chomsky.translate('messages', 0)).toBe('Pas de messages.');
 			expect(chomsky.translate('messages', 1)).toBe('Seulement 1 message');
-			expect(chomsky.translate('messages', 50)).toBe('Un grand nombre de messages.');
+			expect(chomsky.translate('messages', 50)).toBe('50 messages.');
 
 		});
 	});
