@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "moment": "^2.13.0",
+    "moment-timezone": "^0.5.4",
     "numbro": "^1.7.1"
   }
 }
