@@ -5,12 +5,14 @@ export class Formats {
 	    // Format formatDefaults
 	    this.formatDefaults = {
 		    currency: {
-			    display: '0[.]00'
+			    display: '0,0.00'
 		    },
 		    date: {
 			    short: 'l'
 		    },
-		    number: {}
+		    number: {
+			    default: ''
+		    }
 	    };
 
 	    this.setLocale(locale || navigator.language);
@@ -26,23 +28,41 @@ export class Formats {
 
     setLocale(locale) {
 	    this.formatDefaults.locale = locale;
-        moment.locale(this.formatDefaults.locale);
-        numbro.setCulture(this.formatDefaults.locale);
+		if (moment && locale) {
+			// Allows en and us-EN
+			// TODO: probably want to disable this. It should always be a full locale 'en-US'
+			let timeLocale = (locale.split('-')[0] || locale);
+			moment.locale(timeLocale);
+		}
+	    if (numbro) {
+		    numbro.setCulture(this.formatDefaults.locale);
+	    }
     }
 
-    formatNumber(value) {
-        return numbro(value).format();
+    formatNumber(value, format) {
+        return numbro(value).format((format || this.formatDefaults.number.default));
     }
 
     parseNumber(numberStr) {
-        return numbro(numberStr).unformat();
+        return numbro().unformat(numberStr);
     }
 
-    formatCurrency(value, customFormat) {
-        return numbro(value).formatCurrency(customFormat || this.formatDefaults.currency.display)
-    }
+	formatCurrency(value, customFormat = {}) {
+	    let currency;
+	    let format = customFormat.format || undefined;
 
-    formatDate(date, format) {
-        return moment(date).format((format || this.formatDefaults.date.short));
+		if (customFormat.locale) {
+		    let currentLocale = this.formatDefaults.locale;
+		    numbro.setCulture(customFormat.locale);
+		    currency = numbro(value).formatCurrency(format || this.formatDefaults.currency.display);
+		    numbro.setCulture(currentLocale);
+	    } else {
+		    currency = numbro(value).formatCurrency(format || this.formatDefaults.currency.display);
+	    }
+	    return currency;
+	}
+
+    formatDate(date, format = this.formatDefaults.date.short, mask) {
+	    return moment(date, mask).format(format);
     }
 }

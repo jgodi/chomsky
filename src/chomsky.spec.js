@@ -72,6 +72,27 @@ describe('Class: Chomsky', () => {
 			expect(chomsky.setLanguage).toBeDefined();
 			done();
 		});
+
+		it('should set the current locale.', done => {
+			let locale = 'en-US';
+			spyOn(chomsky.formats, 'setLocale').and.callFake(() => {});
+			chomsky.setLanguage(locale);
+			expect(chomsky.currentLocale).toBe(locale);
+			expect(chomsky.formats.setLocale).toHaveBeenCalledWith(locale);
+			done();
+		});
+
+		it('should set the current locale and apply a language.', done => {
+			let locale = 'en-US';
+			let language = { greeting: 'Hello' };
+			spyOn(chomsky.formats, 'setLocale').and.callFake(() => {});
+			spyOn(chomsky, 'applyLanguage').and.callFake(() => {});
+			chomsky.setLanguage(locale, language);
+			expect(chomsky.currentLocale).toBe(locale);
+			expect(chomsky.formats.setLocale).toHaveBeenCalledWith(locale);
+			expect(chomsky.applyLanguage).toHaveBeenCalledWith(locale, language);
+			done();
+		});
 	});
 
 	describe('Function: applyLanguage(language, translationObject)', () => {

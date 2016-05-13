@@ -37,8 +37,17 @@ class Demo {
 	    console.log('\ten-US');
 	    console.log('\t\t' + this.chomsky.translate('TODAY', { today: new Date() }));
 	    this.chomsky.setLanguage(frLocale, { TODAY: 'Aujourd\'hui est {today:date:DD[/]MM[/]YYYY}.' });
-        console.log('\tfr-FR');
+	    console.log('\tfr-FR');
         console.log('\t\t' + this.chomsky.translate('TODAY', { today: new Date() }));
+
+	    // Date string
+	    console.log('DATE STRING');
+	    this.chomsky.setLanguage(usLocale, { TOMORROW: 'Today is {today:date::MM-DD-YYYY}.' });
+	    console.log('\ten-US');
+	    console.log('\t\t' + this.chomsky.translate('TOMORROW', { today: '7/4/1776' }));
+	    this.chomsky.setLanguage(frLocale, { TOMORROW: 'Aujourd\'hui est {today:date::DD-MM-YYYY}.' });
+	    console.log('\tfr-FR');
+	    console.log('\t\t' + this.chomsky.translate('TOMORROW', { today: '4/7/1776' }));
 
         // $$
         console.log('MONEY');

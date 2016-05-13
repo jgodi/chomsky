@@ -1,124 +1,175 @@
 import { Formats } from './formats';
 
-xdescribe('Class: Formats', () => {
-    it('Empty constructor', () => {
-        let invariant = new Formats;
-        let actual = invariant.getLocale();
-        expect(actual).toEqual(navigator.language.toLowerCase());
+describe('Class: Formats', () => {
+
+	it('should initialize with its defaults set.', () => {
+        let formats = new Formats;
+		expect(formats).toBeDefined();
+		expect(formats.formatDefaults).toBeDefined();
+		expect(formats.formatDefaults.currency).toBeDefined();
+		expect(formats.formatDefaults.date).toBeDefined();
+		expect(formats.formatDefaults.number).toBeDefined();
     });
 
-    it('locale constructor', () => {
-        let locale = "fr-FR";
-        let invariant = new Formats(locale);
-        let actual = invariant.getLocale();
-        expect(actual).toEqual(locale.toLowerCase());
+	describe('Function: override(formatOverrides)', () => {
+		it('should allow a user to override a locale within their translations object', () => {
+			let formats = new Formats;
+			let firstLocale = {
+				locale: 'en-US'
+			};
+			let secondLocale = {
+				locale: 'fr-FR'
+			};
+			formats.override(firstLocale);
+			expect(formats.formatDefaults.locale).toBe('en-US');
+			formats.override(secondLocale);
+			expect(formats.formatDefaults.locale).toBe('fr-FR');
+		});
+		it('should allow a user to override formatters within their translations object', () => {
+			let formats = new Formats;
+			expect(formats.formatDefaults.currency.display).toBe('0,0.00');
+			expect(formats.formatDefaults.date.short).toBe('l');
+			let firstLocale = {
+				currency: {
+					display: '0'
+				},
+				date: {
+					short: 'lll'
+				},
+				number: {
+					format: '0,0.0000'
+				}
+			};
+			formats.override(firstLocale);
+			expect(formats.formatDefaults.currency.display).toBe('0');
+			expect(formats.formatDefaults.date.short).toBe('lll');
+			expect(formats.formatDefaults.number.format).toBe('0,0.0000');
+		});
+	});
+
+    describe('Function: setLocale(locale)', () => {
+	    it('should set the locale.', () => {
+		    let formats = new Formats('en-US');
+		    expect(formats.formatDefaults.locale).toBe('en-US');
+		    formats.setLocale('fr-FR');
+		    expect(formats.formatDefaults.locale).toBe('fr-FR');
+	    });
+	    it('should set the locale from the browsers locale by default.', () => {
+		    let formats = new Formats;
+		    let locale = window.navigator.language;
+		    expect(formats.formatDefaults.locale).toBe(locale);
+	    });
     });
 
-    it('changeLocale', () => {
-        let firstLocale = "fr-FR";
-        let secondLocale = "en-US";
-        let invariant = new Formats(firstLocale);
-        invariant.setLocale(secondLocale);
-        let actual = invariant.getLocale();
-        expect(actual).toEqual(secondLocale.toLowerCase());
+    describe('Function: formatNumber(value)', () => {
+	    it('should format a US number', () => {
+		    let formats = new Formats('en-US');
+		    let actual = formats.formatNumber(123456789);
+		    expect(actual).toBe('123,456,789');
+	    });
+
+	    it('should format a FR number', () => {
+		    let formats = new Formats('fr-FR');
+		    let actual = formats.formatNumber(123456789).split(' ');
+		    expect(actual[0]).toBe('123');
+		    expect(actual[1]).toBe('456');
+		    expect(actual[2]).toBe('789');
+	    });
+
+	    it('should format a percentage.', () => {
+		    let formats = new Formats('en-US');
+		    let actual = formats.formatNumber(26.789, '0.000%');
+		    expect(actual).toBe('2678.900%');
+	    });
     });
 
-    it('format US number', () => {
-        let invariant = new Formats("en-US");
-        let actual = invariant.formatNumber(123456789);
+	describe('Function: parseNumber(numberStr)', () => {
+		it('should parse a US number', () => {
+			let formats = new Formats('en-US');
+			let actual = formats.parseNumber('123,456,789.12');
+			expect(actual).toEqual(123456789.12);
+		});
 
-        expect(actual).toEqual('123,456,789');
+		it('should parse a FR number', () => {
+			let formats = new Formats('fr-FR');
+			let actual = formats.parseNumber('123 456 789,12');
+			expect(actual).toEqual(123456789.12);
+		});
+	});
+
+    describe('Function: formatCurrency(value, customFormat)', () => {
+	    it('should format US currency', () => {
+		    let formats = new Formats('en-US');
+		    let actual = formats.formatCurrency(1234567.89);
+		    expect(actual).toEqual('$1,234,567.89');
+	    });
+
+	    it('should format US currency with custom override', () => {
+		    let formats = new Formats('en-US');
+		    let customFormat = {
+			    format: '0[.]00'
+		    };
+		    let actual = formats.formatCurrency(1234567.89, customFormat);
+		    expect(actual).toEqual('$1234567.89');
+	    });
+
+	    it('should format FR currency', () => {
+		    let formats = new Formats('fr-FR');
+		    let actual = formats.formatCurrency(1234567.89);
+		    expect(actual).toEqual('1 234 567,89€');
+	    });
+
+	    it('should allow a format US currency even in FR locale', () => {
+		    let formats = new Formats('fr-FR');
+		    let customFormat = {
+			    locale: 'en-US'
+		    };
+		    let actual = formats.formatCurrency(1234567.89, customFormat);
+		    expect(actual).toEqual('$1,234,567.89');
+	    });
     });
 
-    it('parse US number', () => {
-        let invariant = new Formats("en-US");
-        let actual = invariant.parseNumber('123,456,789.12');
-        expect(actual).toEqual(123456789.12);
-    });
+	describe('Function: formatDate(date, format)', () => {
 
-    it('format FR number', () => {
-        let invariant = new Formats("fr-FR");
-        let actual = invariant.formatNumber(123456789);
-        expect(actual).toEqual('123 456 789');
-    });
+		describe('Date String', () => {
+			it('render a US date from a date string', () => {
+				let formats = new Formats;
+				formats.setLocale('en-US');
+				expect(formats.formatDate('July 4, 1776', undefined, 'MMM D YYYY')).toBe('7/4/1776');
+			});
+			it('render a FR date from a date string', () => {
+				let formats = new Formats;
+				formats.setLocale('fr-FR');
+				// TODO: unsupported by moment
+				expect(formats.formatDate('1776 juillet 4', undefined, 'YYYY MMM D')).toBe('4/7/1776');
+			});
+		});
 
-    it('praser FR number', () => {
-        let invariant = new Formats("fr-FR");
-        let actual = invariant.parseNumber("123 456 789,12");
-        expect(actual).toEqual(123456789.12);
-    });
+		describe('Short date', () => {
+			it('render a US date from a short date', () => {
+				let formats = new Formats;
+				formats.setLocale('en-US');
+				expect(formats.formatDate('7/4/1776', undefined, 'MM-DD-YYYY')).toBe('7/4/1776');
+			});
+			it('render a FR date from a short date', () => {
+				let formats = new Formats;
+				formats.setLocale('fr-FR');
+				// TODO: the European order isn't being respected
+				expect(formats.formatDate('4/7/1776', undefined, 'DD-MM-YYYY')).toBe('4/7/1776');
+			});
+		});
 
-    it('format US currency', () => {
-        let invariant = new Formats("en-US");
-        let actual = invariant.formatCurrency(123456789, 'USD');
-        expect(actual).toEqual('$123,456,789.00');
-    });
-
-    it('format FR currency', () => {
-        let invariant = new Formats("fr-FR");
-        let actual = invariant.formatCurrency(123456789, 'USD');
-        expect(actual).toEqual('123 456 789,00 $US');
-    });
-
-    it('format short date US', () => {
-        let invariant = new Formats("en-US");
-        let actual = invariant.formatShortDate(1360013296000);
-        expect(actual).toEqual('2/4/2013');
-    });
-
-    it('format short date France', () => {
-        let invariant = new Formats('fr-FR');
-        let actual = invariant.formatShortDate(1360013296000);
-        expect(actual).toEqual('4/2/2013');
-    });
-
-    it('parse short date US', () => {
-        let invariant = new Formats('en-US');
-        let actual = invariant.parseShortDate('2/4/2013');
-        expect(actual.utc().toDate().getTime()).toEqual(1359954000000);
-    });
-
-    it('parse short date France', () => {
-        let invariant = new Formats('fr-FR');
-        let actual = invariant.parseShortDate('4/2/2013');
-        expect(actual.utc().toDate().getTime()).toEqual(1359954000000);
-    });
-
-    it('parse short date change format', () => {
-        let invariant = new Formats('en-US');
-        let actual = invariant.parseShortDate('2/4/2013');
-        expect(actual.utc().toDate().getTime()).toEqual(1359954000000);
-
-        invariant.setLocale('fr-FR');
-        actual = invariant.parseShortDate('4/2/2013');
-        expect(actual.utc().toDate().getTime()).toEqual(1359954000000);
-    });
-
-    it('format time US', () => {
-        let invariant = new Formats('en-US');
-        let actual = invariant.formatTime(1460567156000);
-        expect(actual).toEqual('1:05 PM');
-    });
-
-    it('parse time US', () => {
-        let invariant = new Formats('en-US');
-        let actual = invariant.parseTime('12:15 PM');
-        let expected = new Date();
-        expected.setHours(12, 15, 0, 0);
-        expect(actual.toDate().getTime()).toEqual(expected.getTime());
-    });
-
-    it('format time FR', () => {
-        let invariant = new Formats('fr-FR');
-        let actual = invariant.formatTime(1460567156000);
-        expect(actual).toEqual('13:05');
-    });
-
-    it('parse time FR', () => {
-        let invariant = new Formats('fr-FR');
-        let actual = invariant.parseTime('13:15');
-        let expected = new Date();
-        expected.setHours(13, 15, 0, 0);
-        expect(actual.toDate().getTime()).toEqual(expected.getTime());
-    });
+		describe('JS Date object', () => {
+			it('render a US date from a JS Date', () => {
+				let formats = new Formats;
+				formats.setLocale('en-US');
+				expect(formats.formatDate(new Date(1776, 6, 4))).toBe('7/4/1776');
+			});
+			it('render a FR date from a JS Date', () => {
+				let formats = new Formats;
+				formats.setLocale('fr-FR');
+				expect(formats.formatDate(new Date(1776, 6, 4))).toBe('4/7/1776');
+			});
+		});
+	});
 });

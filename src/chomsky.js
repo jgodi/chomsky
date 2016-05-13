@@ -119,7 +119,6 @@ export class Chomsky {
 			dictionary = this.translationsDictionary[languageCode][variantCode];
 		}
 		let tokens = key.split('.');
-
 		for (let i = 0; i < tokens.length; i++) {
 			if (!value) {
 				value = dictionary[tokens[i]];
@@ -127,7 +126,6 @@ export class Chomsky {
 				value = value[tokens[i]];
 			}
 		}
-
 		return value;
 	}
 
@@ -179,7 +177,7 @@ export class Chomsky {
                 let unparsedValue = interpolation[params[0]];
                 switch (params[1]) {
                     case 'date':
-                        return this.formats.formatDate(unparsedValue, params[2]);
+                        return this.formats.formatDate(unparsedValue, (params[2] || undefined), params[3]);
                     case 'currency':
                         return this.formats.formatCurrency(unparsedValue, params[2]);
                     case 'number':
