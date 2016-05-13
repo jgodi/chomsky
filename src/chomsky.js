@@ -119,9 +119,15 @@ export class Chomsky {
 			dictionary = this.translationsDictionary[languageCode][variantCode];
 		}
 		let tokens = key.split('.');
-		for (let i = 0; i < tokens.length && value !== undefined; i++) {
-			value = dictionary[tokens[i]];
+
+		for (let i = 0; i < tokens.length; i++) {
+			if (!value) {
+				value = dictionary[tokens[i]];
+			} else {
+				value = value[tokens[i]];
+			}
 		}
+
 		return value;
 	}
 

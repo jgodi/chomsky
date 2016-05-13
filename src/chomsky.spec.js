@@ -98,10 +98,44 @@ describe('Class: Chomsky', () => {
 		let chomsky;
 		beforeEach(() => {
 			chomsky = new Chomsky;
+			chomsky.translationsDictionary['en'] = {
+				greeting: 'Hello',
+				menu: {
+					title: 'The Menu',
+					button: {
+						label: 'Click Here.',
+						alt: {
+							desc: 'Tool tip'
+						}
+					}
+				},
+				US: {
+					farewell: 'Goodbye'
+				}
+			};
+
 		});
 		it('should be defined.', () => {
 			expect(chomsky.getValue).toBeDefined();
 		});
+
+		it('should return a value from the dictionary.', () => {
+			expect(chomsky.getValue).toBeDefined();
+			expect(chomsky.getValue('greeting', 'en')).toBe('Hello');
+		});
+
+		it('should return a nested value from the dictionary.', () => {
+			expect(chomsky.getValue).toBeDefined();
+			expect(chomsky.getValue('menu.title', 'en')).toBe('The Menu');
+			expect(chomsky.getValue('menu.button.label', 'en')).toBe('Click Here.');
+			expect(chomsky.getValue('menu.button.alt.desc', 'en')).toBe('Tool tip');
+		});
+
+		it('should return a nested value from the locale dictionary.', () => {
+			expect(chomsky.getValue).toBeDefined();
+			expect(chomsky.getValue('farewell', 'en', 'US')).toBe('Goodbye');
+		});
+
 	});
 
 	describe('Function: translate(key, interpolation, pluralValue)', () => {
