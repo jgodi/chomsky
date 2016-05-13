@@ -1,44 +1,58 @@
-// App
-import {Storage} from './storage';
-// Vendor
-var objectAssignDeep = require('object-assign-deep');
+import { mergeDeep } from './object-assign-deep';
 
 export class DictionaryManager {
-    constructor() {
-        this.storage = new Storage('dictionary-manager');
-        this.storageKey = 'dictionary';
-
-        this.locale = window.navigator.language;
-        // TODO: get this from last value used via localStorage (build preferences)
-        this.preferredLanguage = this.locale;
-
-        this.initializeDictionaries(this.preferredLanguage);
+    constructor(locale) {
+        this.locale = locale || window.navigator.language;
+	    // By default initialize with browser default
+        this.initializeDictionaries(this.locale);
     }
 
+	/**
+	 * @description only called once on init to bootstrap a default language with invariants
+	 * @param preferredLanguage
+	 */
     initializeDictionaries(preferredLanguage) {
-        // Recall dictionaries from localStorage
-        this.dictionaries = this.storage.getItem(this.storageKey) || {};
-
-        if (!this.dictionaries.hasOwnProperty(preferredLanguage)) {
-            // Create new language for preferred language
-            this.addNewTranslation(preferredLanguage, {});
-        }
+        this.dictionaries = {};
+		this.addNewTranslation(preferredLanguage, {});
     }
 
-    addNewTranslation(languageKey, translations) {
+	/**
+	 * @description
+	 * @param languageKey
+	 * @param translations
+	 */
+    addNewTranslation(languageKey, ...translations) {
+		let languageCode = (languageKey.split('-')[0] || '').toLowerCase();
+		let variantCode = (languageKey.split('-')[1] || '').toUpperCase();
+
         if (typeof translations !== 'object') {
             throw new Error('Cannot add new \'translations\' of this type.');
         }
+
         // Check if dictionary exists
-        if (!this.dictionaries.hasOwnProperty(languageKey)) {
+        if (!this.dictionaries.hasOwnProperty(languageCode)) {
             // Create new dictionary
-            this.dictionaries[languageKey] = {};
+            this.dictionaries[languageCode] = {};
         }
-        // Add new translation to dictionary
-        this.dictionaries[languageKey] =  objectAssignDeep({}, this.dictionaries[languageKey], translations);
-        // Cache translations
-        this.storage.setItem(this.storageKey, this.dictionaries);
+
+		translations.forEach(translation => {
+			// Handle locales
+			if (variantCode) {
+				if (!this.dictionaries[languageCode].hasOwnProperty(variantCode)) {
+					this.dictionaries[languageCode][variantCode] = {};
+				}
+				this.dictionaries[languageCode][variantCode] = mergeDeep({}, this.dictionaries[languageCode][variantCode], translation);
+			} else {
+				// Add new translation to dictionary
+				this.dictionaries[languageCode] = mergeDeep({}, this.dictionaries[languageCode], translation);
+			}
+		});
     }
+
+	/**
+	 * @description
+	 * @param languageKey
+	 */
     removeDictionary(languageKey) {
         this.dictionaries[languageKey] = {};
     }
