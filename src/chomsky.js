@@ -1,13 +1,14 @@
 import { DictionaryManager } from './dictionarymanager';
 import { AsyncLoader } from './asyncloader';
 import { Formats } from './formats';
+import { Subject } from 'rxjs/Rx';
 
 export class Chomsky {
     constructor(locale) {
 	    this.dictionaryManager = new DictionaryManager(locale);
 	    this.asyncLoader = new AsyncLoader;
 	    this.translationsDictionary = this.dictionaryManager.dictionaries;
-	    this.changeHandlers = [];
+	    this.changeHandler = Subject.create();
 	    this.currentLocale = this.dictionaryManager.locale;
 	    this.formats = new Formats(this.currentLocale);
     }
@@ -23,16 +24,6 @@ export class Chomsky {
 
     translationFetcher(url) {
         return this.asyncLoader.load(url);
-    }
-
-	/**
-	 * @description: This is the change handler for broadcasting translations
-	 * @param callback
-	 */
-    onChange(callback) {
-        if (callback && typeof callback === 'function') {
-            this.changeHandlers.push(callback);
-        }
     }
 
 	/**
@@ -82,7 +73,7 @@ export class Chomsky {
 			delete translationObject['formats'];
 		}
 		this.addTranslation(language, translationObject);
-        this.changeHandlers.forEach((callback) => callback());
+		this.changeHandler.next();
     }
 
 	/**

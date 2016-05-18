@@ -4,8 +4,11 @@ class Demo {
     constructor() {
         this.chomsky = new Chomsky;
         const usLocale = 'en-US';
-        //const ukLocale = 'en-GB';
         const frLocale = 'fr-FR';
+	    // Listening for changes
+	    this.chomsky.changeHandler.subscribe(() => {
+		    console.log(`\t\t\t\t\t\t\tLanguage changed to: ${this.chomsky.currentLocale}`);
+	    });
 
 	    // Greeting
 	    Promise.all([

@@ -8,7 +8,7 @@ describe('Class: Chomsky', () => {
         expect(instance.dictionaryManager).toBeDefined();
         expect(instance.asyncLoader).toBeDefined();
         expect(instance.translationsDictionary).toBeDefined();
-        expect(instance.changeHandlers).toBeDefined();
+        expect(instance.changeHandler).toBeDefined();
         expect(instance.currentLocale).toBe('en-US');
         expect(instance.formats).toBeDefined();
     });
@@ -19,7 +19,7 @@ describe('Class: Chomsky', () => {
 		expect(instance.dictionaryManager).toBeDefined();
 		expect(instance.asyncLoader).toBeDefined();
 		expect(instance.translationsDictionary).toBeDefined();
-		expect(instance.changeHandlers).toBeDefined();
+		expect(instance.changeHandler).toBeDefined();
 		expect(instance.currentLocale).toBe('en-GB');
 		expect(instance.formats).toBeDefined();
 	});
@@ -50,16 +50,6 @@ describe('Class: Chomsky', () => {
 			chomsky.translationFetcher('url');
 			expect(chomsky.asyncLoader.load).toHaveBeenCalledWith('url');
 			expect(chomsky.asyncLoader.load).toHaveBeenCalledTimes(1);
-		});
-	});
-
-	describe('Function: onChange(callback)', () => {
-		let chomsky;
-		beforeEach(() => {
-			chomsky = new Chomsky;
-		});
-		it('should be defined.', () => {
-			expect(chomsky.onChange).toBeDefined();
 		});
 	});
 

@@ -3,11 +3,8 @@ import gutil, { PluginError } from 'gulp-util';
 import source from 'vinyl-source-stream';
 import buffer from 'vinyl-buffer';
 import sourcemaps from 'gulp-sourcemaps';
-
 import assign from 'object-assign';
-
 import browserify from 'browserify';
-
 import watchify from 'watchify';
 import babelify from 'babelify';
 import del from 'del';
@@ -24,7 +21,9 @@ gulp.task('copy-lib', ['copy'], () => {
             'node_modules/numbro/dist/languages.js',
             'node_modules/numbro/dist/numbro.js',
             'node_modules/moment/min/moment-with-locales.min.js',
-            'node_modules/moment/min/moment.min.js'
+            'node_modules/moment/min/moment.min.js',
+            'node_modules/systemjs/dist/system.js',
+            'node_modules/rxjs/bundles/Rx.js'
         ])
         .pipe(gulp.dest('public/lib'));
 });
