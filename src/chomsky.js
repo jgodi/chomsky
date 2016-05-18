@@ -1,7 +1,7 @@
 import { DictionaryManager } from './dictionarymanager';
 import { AsyncLoader } from './asyncloader';
 import { Formats } from './formats';
-import { Subject } from 'rxjs/Rx';
+import { Subject, Observable } from 'rxjs/Rx';
 
 export class Chomsky {
     constructor(locale) {
@@ -118,6 +118,21 @@ export class Chomsky {
 			}
 		}
 		return value;
+	}
+
+	/**
+	 * @description A method for returning an observable
+	 * @param key
+	 * @param interpolation
+	 * @returns {Observable}
+	 */
+	liveTranslate(key, interpolation) {
+		return Observable.create(observer => {
+			observer.next(this.translate(key, interpolation));
+			this.changeHandler.subscribe(() => {
+				observer.next(this.translate(key, interpolation));
+			});
+		});
 	}
 
 	/**

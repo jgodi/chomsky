@@ -72,7 +72,6 @@ class Demo {
 	    console.log('\ten-US');
 	    console.log('\t\t' + this.chomsky.translate('num', { people: 1234567 }));
 
-
 	    // Pluralization
 	    console.log('PLURALIZATION');
 	    this.chomsky.setLanguage(usLocale, { messages: {
