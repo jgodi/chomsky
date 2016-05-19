@@ -169,7 +169,7 @@ export class Chomsky {
                     case 'currency':
                         return this.formatCurrency(unparsedValue, (params[2] || undefined), (params[3] || undefined));
                     case 'number':
-                        return this.formatNumber(unparsedValue, (params[2] || undefined), (params[3] || undefined));
+                        return this.formatNumber(unparsedValue, (params[2] || undefined));
                     default:
                         return '';
                 }
@@ -184,12 +184,12 @@ export class Chomsky {
 		return this.formats.formatDate(date, format, mask);
 	}
 
-	formatCurrency(key, value, format) {
-		return this.formats.formatDate(key, value, format);
+	formatCurrency(value, format, localeOverride) {
+		return this.formats.formatCurrency(value, format, localeOverride);
 	}
 
-	formatNumber(key, value, format) {
-		return this.formats.formatNumber(key, value, format);
+	formatNumber(numberString, format) {
+		return this.formats.formatNumber(numberString, format);
 	}
 
 }
