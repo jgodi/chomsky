@@ -121,21 +121,6 @@ export class Chomsky {
 	}
 
 	/**
-	 * @description A method for returning an observable
-	 * @param key
-	 * @param interpolation
-	 * @returns {Observable}
-	 */
-	liveTranslate(key, interpolation) {
-		return Observable.create(observer => {
-			observer.next(this.translate(key, interpolation));
-			this.changeHandler.subscribe(() => {
-				observer.next(this.translate(key, interpolation));
-			});
-		});
-	}
-
-	/**
 	 * @name translate
 	 * @param key
 	 * @param interpolation
@@ -180,11 +165,11 @@ export class Chomsky {
 	            let unparsedValue = interpolation[params[0]] || interpolation;
 	            switch (params[1]) {
                     case 'date':
-                        return this.formats.formatDate(unparsedValue, (params[2] || undefined), (params[3] || undefined));
+                        return this.formatDate(unparsedValue, (params[2] || undefined), (params[3] || undefined));
                     case 'currency':
-                        return this.formats.formatCurrency(unparsedValue, (params[2] || undefined), (params[3] || undefined));
+                        return this.formatCurrency(unparsedValue, (params[2] || undefined), (params[3] || undefined));
                     case 'number':
-                        return this.formats.formatNumber(unparsedValue, (params[2] || undefined), (params[3] || undefined));
+                        return this.formatNumber(unparsedValue, (params[2] || undefined), (params[3] || undefined));
                     default:
                         return '';
                 }
@@ -194,6 +179,19 @@ export class Chomsky {
 		// Return the key if no value is present.
         return value || key;
     }
+
+	formatDate(date, format, mask) {
+		return this.formats.formatDate(date, format, mask);
+	}
+
+	formatCurrency(key, value, format) {
+		return this.formats.formatDate(key, value, format);
+	}
+
+	formatNumber(key, value, format) {
+		return this.formats.formatNumber(key, value, format);
+	}
+
 }
 
 export default Chomsky;
