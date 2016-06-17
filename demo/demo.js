@@ -22,6 +22,7 @@ class Demo {
         const frLocale = 'fr-FR';
         const gbLocale = 'en-GB';
         // Swap locales
+        this.chomsky.use('en');
         this.chomsky.use(usLocale);
         this.chomsky.use(frLocale);
         this.chomsky.use(gbLocale).subscribe(() => {
