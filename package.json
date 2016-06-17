@@ -1,6 +1,6 @@
 {
   "name": "chomsky",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A simple ES6 i18n engine.",
   "scripts": {
     "start": "npm run serve",

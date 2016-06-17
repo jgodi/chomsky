@@ -2,103 +2,52 @@
 import { DictionaryManager } from './dictionarymanager';
 
 describe('Class: DictionaryManager', () => {
-	let dictionaryManager;
-	beforeEach(() => {
-		dictionaryManager = new DictionaryManager;
-	});
+    let dictionaryManager;
 
-	it('should initialize with a locale and default dictionary when no local is specified.', () => {
-		expect(dictionaryManager.locale).toBeDefined();
-	    expect(dictionaryManager.locale).toBe('en-US');
-	    expect(dictionaryManager.dictionaries.en.US).toBeDefined();
-	});
-	// TODO: add this too
-	it('should initialize with a locale and default dictionary when a local is specified.', () => {
-		let dictionaryManager = new DictionaryManager('en-GB');
-		expect(dictionaryManager.locale).toBeDefined();
-		expect(dictionaryManager.locale).toBe('en-GB');
-		expect(dictionaryManager.dictionaries.en.GB).toBeDefined();
-	});
+    beforeEach(() => {
+        dictionaryManager = new DictionaryManager();
+    });
 
-	describe('Function: addNewTranslation(languageKey, translations)', () => {
-		it('should add a new translation to the variant dictionary.', () => {
-			expect(dictionaryManager.dictionaries.en.US).toBeDefined();
-		    expect(dictionaryManager.dictionaries.en.GB).not.toBeDefined();
-			dictionaryManager.addNewTranslation('en-GB', { GREETING: 'Derp' });
-			expect(dictionaryManager.dictionaries.en.GB).toBeDefined();
-			expect(dictionaryManager.dictionaries.en.GB.GREETING).toBe('Derp');
-		});
+    describe('contains(locale)', () => {
+        it('should be defined', () => {
+            expect(dictionaryManager.contains).toBeDefined();
+        });
+        it('should return true if it contains the locale', ()=> {
+            dictionaryManager.dictionaries = {
+                test: {}
+            };
+            expect(dictionaryManager.contains('test')).toBe(true);
+        });
+        it('should return false if it does not contains the locale', ()=> {
+            expect(dictionaryManager.contains('test')).toBe(false);
+        });
+    });
 
-		it('should add a new translation to the language dictionary.', () => {
-			expect(dictionaryManager.dictionaries.en.US).toBeDefined();
-			expect(dictionaryManager.dictionaries.en.GB).not.toBeDefined();
-			dictionaryManager.addNewTranslation('en', { GREETING: 'Derp' });
-			expect(dictionaryManager.dictionaries.en.GREETING).toBe('Derp');
-		});
+    describe('get(locale)', () => {
+        it('should be defined', () => {
+            expect(dictionaryManager.get).toBeDefined();
+        });
+        it('should return the locale if it exists', ()=> {
+            dictionaryManager.dictionaries = {
+                test: {}
+            };
+            expect(dictionaryManager.get('test')).toEqual({});
+        });
+        it('should return if it does not contains the locale', ()=> {
+            expect(dictionaryManager.get('test')).not.toBeDefined();
+        });
+    });
 
-		it('should add a new complex translation to the language dictionary.', () => {
-			expect(dictionaryManager.dictionaries.en.US).toBeDefined();
-			let mockTranslation = {
-				pageOne: {
-					greeting: 'Hello',
-					componentOne: {
-						label: 'Component One'
-					}
-				}
-			};
-			dictionaryManager.addNewTranslation('en-US', mockTranslation);
-			expect(dictionaryManager.dictionaries.en.US.pageOne.greeting).toBe('Hello');
-			expect(dictionaryManager.dictionaries.en.US.pageOne.componentOne.label).toBe('Component One');
-		});
-
-		it('should merge complex translations to the language dictionary.', () => {
-			expect(dictionaryManager.dictionaries.en.US).toBeDefined();
-			let mockTranslationOne = {
-				pageOne: {
-					greeting: 'Hello',
-					componentOne: {
-						label: 'Component One'
-					}
-				}
-			};
-			let mockTranslationTwo = {
-				pageOne: {
-					componentTwo: {
-						label: 'Component Two'
-					}
-				}
-			};
-			dictionaryManager.addNewTranslation('en-US', mockTranslationOne);
-			dictionaryManager.addNewTranslation('en-US', mockTranslationTwo);
-			expect(dictionaryManager.dictionaries.en.US.pageOne.greeting).toBe('Hello');
-			expect(dictionaryManager.dictionaries.en.US.pageOne.componentOne.label).toBe('Component One');
-			expect(dictionaryManager.dictionaries.en.US.pageOne.componentTwo.label).toBe('Component Two');
-		});
-		it('should merge complex translations to the language dictionary and allow multiple translations at once.', () => {
-			expect(dictionaryManager.dictionaries.en.US).toBeDefined();
-			let mockTranslationOne = {
-				pageOne: {
-					greeting: 'Hello',
-					componentOne: {
-						label: 'Component One'
-					}
-				}
-			};
-			let mockTranslationTwo = {
-				pageOne: {
-					componentTwo: {
-						label: 'Component Two'
-					}
-				}
-			};
-			dictionaryManager.addNewTranslation('en-US', mockTranslationOne, mockTranslationTwo);
-			expect(dictionaryManager.dictionaries.en.US.pageOne.greeting).toBe('Hello');
-			expect(dictionaryManager.dictionaries.en.US.pageOne.componentOne.label).toBe('Component One');
-			expect(dictionaryManager.dictionaries.en.US.pageOne.componentTwo.label).toBe('Component Two');
-		});
-
-		xit('should only allow 3 translations at a time.', () => {
-			// TODO:
-		});
-	});
+    describe('add(locale, translations, fallbackTranslations)', () => {
+        it('should be defined', () => {
+            expect(dictionaryManager.add).toBeDefined();
+        });
+        it('should add properly', ()=> {
+            dictionaryManager.add('test', { 'MESSAGE': 'HI' }, { 'FALLBACK': 'FALL', 'MESSAGE': 'NOPE' });
+            expect(dictionaryManager.get('test')).toEqual({
+                'MESSAGE': 'HI',
+                'FALLBACK': 'FALL'
+            })
+        });
+    });
 });
