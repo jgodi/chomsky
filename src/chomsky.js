@@ -85,6 +85,24 @@ export class Chomsky {
                         }
                     }
                 }
+            } else if (typeof interpolation === 'object') {
+                if (interpolation.gender) {
+                    if (interpolation.quantity === 0 || interpolation.quantity) {
+                        if (value[interpolation.gender].hasOwnProperty(interpolation.quantity)) {
+                            value = value[interpolation.gender][interpolation.quantity];
+                        } else {
+                            if (interpolation.quantity === 0) {
+                                value = value[interpolation.gender].zero;
+                            } else {
+                                value = value[interpolation.gender].many;
+                            }
+                        }
+                    } else {
+                        throw new Error('Missing quantity');
+                    }
+                } else {
+                    throw new Error('Missing gender');
+                }
             }
         }
 
@@ -109,6 +127,7 @@ export class Chomsky {
                         return this.formatCurrency(unparsedValue, (params[2] || undefined), (params[3] || undefined));
                     case 'number':
                         return this.formatNumber(unparsedValue, (params[2] || undefined));
+                    // TODO: add a flag for format
                     default:
                         return '';
                 }
