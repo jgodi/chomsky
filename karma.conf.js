@@ -58,17 +58,18 @@ module.exports = function (config) { // eslint-disable-line
         logLevel: config.LOG_INFO,
 
         // enable / disable watching file and executing tests whenever any file changes
-        autoWatch: true,
+        // autoWatch: true,
+        autoWatch: false,
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        // browsers: ['PhantomJS'],
-        browsers: ['Chrome'],
+        browsers: ['PhantomJS'],
+        // browsers: ['Chrome'],
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
-        // singleRun: true,
-        singleRun: false,
+        singleRun: true,
+        // singleRun: false,
 
         // Concurrency level
         // how many browser should be started simultaneous
