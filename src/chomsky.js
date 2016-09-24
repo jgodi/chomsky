@@ -127,7 +127,8 @@ export class Chomsky {
                         return this.formatCurrency(unparsedValue, (params[2] || undefined), (params[3] || undefined));
                     case 'number':
                         return this.formatNumber(unparsedValue, (params[2] || undefined));
-                    // TODO: add a flag for format
+                    case 'format':
+                        return this.format(unparsedValue, (params[2] || undefined), (params[3] || undefined));
                     default:
                         return '';
                 }
@@ -136,6 +137,19 @@ export class Chomsky {
 
         // Return the key if no value is present.
         return value || key;
+    }
+
+    /**
+     * @public
+     * @name format
+     * @param string
+     * @param format
+     * @param mask
+     * @returns {*}
+     * @private
+     */
+    format(string, format, mask) {
+        return this.formats.format(string, format, mask);
     }
 
     /**

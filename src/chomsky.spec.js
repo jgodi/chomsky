@@ -172,7 +172,10 @@ describe('Class: Chomsky', () => {
                         1: '{host} ont un {candidate} et ils sont excités.',
                         many: '{host} ont des {candidate} et ils sont ravis.'
                     }
-                }
+                },
+                upperGreet: 'Bonjour {name:format:uppercase}',
+                lowerGreet: 'Bonjour {name:format:lowercase}',
+                titleGreet: 'Bonjour {name:format:title}'
             };
             let usTranslation = {
                 greeting: 'Hello',
@@ -201,7 +204,10 @@ describe('Class: Chomsky', () => {
                         1: '{host} have one {candidate} and they are excited.',
                         many: '{host} have some {candidate} and they are ecstatic.'
                     }
-                }
+                },
+                upperGreet: 'Hello {name:format:uppercase}',
+                lowerGreet: 'Hello {name:format:lowercase}',
+                titleGreet: 'Hello {name:format:title}'
             };
             chomsky.dictionaryManager.add('fr', frenchTranslation);
             chomsky.dictionaryManager.add('en', usTranslation);
@@ -400,6 +406,18 @@ describe('Class: Chomsky', () => {
             frPluralLabelPackage.quantity = 50;
             frPluralLabelPackage.candidate = 'candidats';
             expect(chomsky.translate('candidate', frPluralLabelPackage)).toBe('Les gens ont des candidats et ils sont ravis.');
+        });
+
+        it('should format an interpolated string.', () => {
+            expect(chomsky.translate).toBeDefined();
+            chomsky.use('en');
+            expect(chomsky.translate('upperGreet', { name: 'Jane' })).toBe('Hello JANE');
+            expect(chomsky.translate('lowerGreet', { name: 'Jane' })).toBe('Hello jane');
+            expect(chomsky.translate('titleGreet', { name: 'The people' })).toBe('Hello The People');
+            chomsky.use('fr');
+            expect(chomsky.translate('upperGreet', { name: 'Jane' })).toBe('Bonjour JANE');
+            expect(chomsky.translate('lowerGreet', { name: 'Jane' })).toBe('Bonjour jane');
+            expect(chomsky.translate('titleGreet', { name: 'Les gens' })).toBe('Bonjour Les Gens');
         });
     });
 

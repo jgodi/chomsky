@@ -63,4 +63,22 @@ export class Formats {
     formatDate(date, format = this.formatDefaults.date.short, mask) {
         return moment(date, mask).format(format);
     }
+
+    format(string, format) {
+        let formattedString = string;
+        switch (format) {
+            case 'uppercase':
+                formattedString = formattedString.toUpperCase();
+                break;
+            case 'lowercase':
+                formattedString = formattedString.toLowerCase();
+                break;
+            case 'title':
+                formattedString = formattedString.replace(/\w\S*/g, txt => { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+                break;
+            default:
+                break;
+        }
+        return formattedString;
+    }
 }
