@@ -1,5 +1,5 @@
 // Karma configuration
-module.exports = function (config) {
+module.exports = function (config) { // eslint-disable-line
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -62,14 +62,16 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['PhantomJS'],
+        // browsers: ['PhantomJS'],
+        browsers: ['Chrome'],
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
+        // singleRun: true,
         singleRun: false,
 
         // Concurrency level
-        // how many browser should be started simultanous
+        // how many browser should be started simultaneous
         concurrency: Infinity
     });
 };

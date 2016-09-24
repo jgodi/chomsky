@@ -22,7 +22,7 @@ export class DictionaryManager {
      * @returns {Object}
      */
     get(locale) {
-        return this.dictionaries[locale];
+        return this.dictionaries[locale] || this.dictionaries[locale.split('-')[0]];
     }
 
     /**

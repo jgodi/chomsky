@@ -116,7 +116,7 @@ export class Chomsky {
         }
 
         // Return the key if no value is present.
-        return value || '';
+        return value || key;
     }
 
     /**
