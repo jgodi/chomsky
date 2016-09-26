@@ -175,7 +175,8 @@ describe('Class: Chomsky', () => {
                 },
                 upperGreet: 'Bonjour {name:format:uppercase}',
                 lowerGreet: 'Bonjour {name:format:lowercase}',
-                titleGreet: 'Bonjour {name:format:title}'
+                titleGreet: 'Bonjour {name:format:title}',
+                denormCap: 'Bonjour {name:format:denormalize,uppercase}'
             };
             let usTranslation = {
                 greeting: 'Hello',
@@ -207,7 +208,8 @@ describe('Class: Chomsky', () => {
                 },
                 upperGreet: 'Hello {name:format:uppercase}',
                 lowerGreet: 'Hello {name:format:lowercase}',
-                titleGreet: 'Hello {name:format:title}'
+                titleGreet: 'Hello {name:format:title}',
+                denormCap: 'Hello {name:format:denormalize,uppercase}'
             };
             chomsky.dictionaryManager.add('fr', frenchTranslation);
             chomsky.dictionaryManager.add('en', usTranslation);
@@ -419,6 +421,14 @@ describe('Class: Chomsky', () => {
             expect(chomsky.translate('lowerGreet', { name: 'Jane' })).toBe('Bonjour jane');
             expect(chomsky.translate('titleGreet', { name: 'Les gens' })).toBe('Bonjour Les Gens');
         });
+
+        it('should combine formats on an interpolated string.', () => {
+            expect(chomsky.translate).toBeDefined();
+            chomsky.use('en');
+            expect(chomsky.translate('denormCap', { name: 'janeDoe' })).toBe('Hello JANE DOE');
+            chomsky.use('fr');
+            expect(chomsky.translate('denormCap', { name: 'janeDoe' })).toBe('Bonjour JANE DOE');
+        });
     });
 
     describe('Function: setLocation(location)', () => {
@@ -432,6 +442,6 @@ describe('Class: Chomsky', () => {
         it('should set the location', () => {
             chomsky.setLocation('TEST');
             expect(chomsky.location).toEqual('TEST');
-        })
+        });
     });
 });

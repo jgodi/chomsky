@@ -76,6 +76,9 @@ export class Formats {
             case 'title':
                 formattedString = formattedString.replace(/\w\S*/g, txt => { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
                 break;
+            case 'denormalize':
+                formattedString = formattedString.replace(/([A-Z])/g, ' $1').replace(/^./, str => { return str.toUpperCase(); });
+                break;
             default:
                 break;
         }

@@ -128,7 +128,16 @@ export class Chomsky {
                     case 'number':
                         return this.formatNumber(unparsedValue, (params[2] || undefined));
                     case 'format':
-                        return this.format(unparsedValue, (params[2] || undefined), (params[3] || undefined));
+                        let formats = params[2].split(',');
+                        let formattedString = unparsedValue;
+                        if (formats.length) {
+                            for (let format of formats) {
+                                formattedString = this.format(formattedString, format);
+                            }
+                        } else {
+                            formattedString = this.format(unparsedValue, (params[2] || undefined), (params[3] || undefined));
+                        }
+                        return formattedString;
                     default:
                         return '';
                 }
