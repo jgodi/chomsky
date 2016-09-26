@@ -69,9 +69,8 @@ export class Chomsky {
      */
     translate(key, interpolation) {
         let value = this._getValue(key);
-
         // Handle pluralization
-        if (typeof value === 'object') {
+        if (value && typeof value === 'object') {
             if (typeof interpolation === 'number') {
                 let pluralization = value;
                 if (pluralization) {
