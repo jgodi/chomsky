@@ -1,0 +1,42 @@
+{
+  "GREETING": "Bonjour, {name}.",
+  "GOODBYE": "Au Revoir, {name}.",
+  "TODAY": "Aujourd'hui est {today:date}.",
+  "TOMORROW": "Aujourd'hui est {tomorrow:date}.",
+  "MONEY": "Vous devez: {debt:currency}",
+  "NUMBER": "Il y a {people:number} choses",
+  "MESSAGES": {
+    "other": {
+      "zero": "Pas de messages. {one}",
+      "1": "Seulement 1 message {two}",
+      "many": "{quantity:number} messages. {one} - {two} - {three}"
+    }
+  },
+  "FORMAT_TEST": "Bonjour encore! -- {name:format:lowercase}",
+  "DEFAULTS_TEST": "Prendre les remplacements par défaut - {one:format:lowercase} -- {two:format:uppercase} -- {three:number}",
+  "SHORT": "Full Short: {value:date:short}",
+  "MEDIUM": "Full Medium: {value:date:medium}",
+  "LONG": "Full Long: {value:date:long}",
+  "DATE_SHORT": "Date Short: {value:date:dateShort}",
+  "DATE_MEDIUM": "Date Medium: {value:date:dateMedium}",
+  "DATE_LONG": "Date Long: {value:date:dateLong}",
+  "TIME_SHORT": "Time Short: {value:date:timeShort}",
+  "TIME_LONG": "Time Long: {value:date:timeLong}",
+  "DATE_CUSTOM": "Date Custom: {value:date:custom1}",
+  "_defaults_": {
+    "currency": {
+      "currency": "EUR"
+    },
+    "date": {
+      "custom1": {
+        "month": "narrow",
+        "day": "numeric",
+        "year": "numeric",
+        "hour": "2-digit",
+        "minute": "2-digit",
+        "timeZoneName": "long",
+        "hour12": false
+      }
+    }
+  }
+}

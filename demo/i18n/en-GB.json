@@ -1,0 +1,11 @@
+{
+  "GREETING": "Ello, {name}.",
+  "GOODBYE": "Good day, {name}.",
+  "TODAY": "Today is {today:date}.",
+  "TOMORROW": "Today is {tomorrow:date}.",
+  "_defaults_": {
+    "currency": {
+      "currency": "GBP"
+    }
+  }
+}

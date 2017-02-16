@@ -1,0 +1,39 @@
+{
+  "GREETING": "Hello, {name}.",
+  "GOODBYE": "Goodbye, {name}.",
+  "TODAY": "Today is {today:date}.",
+  "TOMORROW": "Today is {tomorrow:date}.",
+  "MONEY": "You owe: {debt:currency}",
+  "NUMBER": "There are {people:number} things",
+  "MESSAGES": {
+    "other": {
+      "zero": "No messages.",
+      "1": "Only 1 message.",
+      "many": "{quantity:number} messages."
+    }
+  },
+  "FORMAT_TEST": "Hello AGAIN! -- {name:format:lowercase}",
+  "DEFAULTS_TEST": "Grabbing default replacements - {one:format:lowercase} -- {two:format:uppercase} -- {three:number}",
+  "SHORT": "Full Short: {value:date:short}",
+  "MEDIUM": "Full Medium: {value:date:medium}",
+  "LONG": "Full Long: {value:date:long}",
+  "DATE_SHORT": "Date Short: {value:date:dateShort}",
+  "DATE_MEDIUM": "Date Medium: {value:date:dateMedium}",
+  "DATE_LONG": "Date Long: {value:date:dateLong}",
+  "TIME_SHORT": "Time Short: {value:date:timeShort}",
+  "TIME_LONG": "Time Long: {value:date:timeLong}",
+  "DATE_CUSTOM": "Date Custom: {value:date:custom1}",
+  "_defaults_": {
+    "date": {
+      "custom1": {
+        "month": "narrow",
+        "day": "numeric",
+        "year": "numeric",
+        "hour": "2-digit",
+        "minute": "2-digit",
+        "timeZoneName": "long",
+        "hour12": false
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+node_modules
+build
+src/**.js
+demo/src/chomsky
+
+coverage
+.nyc_output
+*.log

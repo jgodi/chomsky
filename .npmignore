@@ -1,0 +1,12 @@
+src
+tsconfig.json
+bs-config.json
+tslint.json
+.travis.yml
+.github
+demo
+
+coverage
+setup-browser-env.js
+.nyc_output
+*.log
