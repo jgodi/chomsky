@@ -101,6 +101,10 @@ export class Chomsky {
         this.defaultReplacements = defaultReplacements;
     }
 
+    public overrideCurrency(currency: string): void {
+        this.formats.overrideCurrency = currency;
+    }
+
     public use(locale: string): Observable<any> {
         // Capture the pending task
         let pending;

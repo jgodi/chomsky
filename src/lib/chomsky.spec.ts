@@ -117,6 +117,13 @@ test('use should properly load translations if dictionary has values', t => {
     });
 });
 
+// overrideCurrency(currency)
+
+test('overrideCurrency should set the override on the formats', t => {
+    t.context.chomsky.overrideCurrency('RUB');
+    t.is(t.context.chomsky.formats.overrideCurrency, 'RUB');
+});
+
 // getValue(key)
 
 test('getValue should return the value for the key', t => {

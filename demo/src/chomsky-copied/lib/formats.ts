@@ -19,6 +19,8 @@ export class Formats {
     private defaults: IFormatDefaults;
     // Current locale
     private locale: string;
+    // Override currency to blanket change the currency behavior
+    public overrideCurrency: string;
 
     constructor() {
         // Initially set the locale to the browser
@@ -45,6 +47,9 @@ export class Formats {
     public formatCurrency(value: number, format?: string | Intl.NumberFormatOptions): string {
         let _format: Intl.NumberFormatOptions = (typeof format === 'string') ? mergeDeep({}, { currency: format }, this.defaults.currency) : mergeDeep({}, format, this.defaults.currency);
         let options = mergeDeep({ style: 'currency', currency: 'USD' }, _format);
+        if (this.overrideCurrency) {
+            options.currency = this.overrideCurrency;
+        }
         return new Intl.NumberFormat([this.locale, 'en-US'], options).format(value);
     }
 

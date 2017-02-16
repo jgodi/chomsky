@@ -26,16 +26,15 @@ export class Loader {
                     try {
                         resolve(JSON.parse(xhr.responseText));
                     } catch (e) {
-                        console.error(`[Chomsky] (${url}) - Parse Error: ${e.toString()}`);
-                        reject(new Error(`Parse Error: ${e.toString()}`));
+                        reject(`Parse Error: Invalid JSON`);
                     }
                 } else {
-                    reject(new Error(xhr.statusText));
+                    reject(xhr.statusText);
                 }
             };
 
             xhr.onerror = () => {
-                reject(new Error('Network Error'));
+                reject('Network Error');
             };
 
             xhr.send();

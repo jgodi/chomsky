@@ -11,15 +11,13 @@ import { DictionaryManager } from './dictionary-manager';
 import { mergeDeep } from './object-assign-deep';
 
 // Default formats
-const FORMAT_DEFAULTS: IFormatDefaults = {
+export const FORMAT_DEFAULTS: IFormatDefaults = {
     number: {
-        style: 'decimal',
-        maximumSignificantDigits: 2
+        style: 'decimal'
     },
     currency: {
         style: 'currency',
-        currency: 'USD',
-        maximumSignificantDigits: 2
+        currency: 'USD'
     },
     date: {
         short: { // DD/MM/YYYY, HH:MM A - 02/14/2017, 1:17 PM
@@ -101,6 +99,10 @@ export class Chomsky {
 
     public setDefaultReplacements(defaultReplacements: any): void {
         this.defaultReplacements = defaultReplacements;
+    }
+
+    public overrideCurrency(currency: string): void {
+        this.formats.overrideCurrency = currency;
     }
 
     public use(locale: string): Observable<any> {

@@ -196,6 +196,12 @@ test('currency should be able to take a currency as the format', t => {
     t.is(t.context.formats.formatCurrency(123456.789, 'EUR'), '€123,456.79');
 });
 
+test('currency should use the override currency if set', t => {
+    t.context.formats.setLocale('en-US');
+    t.context.formats.overrideCurrency = 'RUB';
+    t.is(t.context.formats.formatCurrency(123456.789), 'RUB123,456.79');
+});
+
 // formatDate(value, format)
 
 test('formatDate should default to en-US for unknown locale', t => {

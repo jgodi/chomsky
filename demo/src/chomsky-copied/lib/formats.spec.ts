@@ -1,5 +1,29 @@
 import { test } from 'ava';
 import { Formats } from './formats';
+import { FORMAT_DEFAULTS } from './chomsky';
+
+const SHORT_HAND_VALUES = {
+    'en-US': {
+        short: '12/4/1987, 12:00',
+        medium: 'Dec 4, 1987, 12:00',
+        long: 'December 4, 1987 at 12:00 ',
+        dateShort: '12/4/1987',
+        dateMedium: 'Dec 4, 1987',
+        dateLong: 'December 4, 1987',
+        timeShort: '12:00',
+        timeLong: '12:00 '
+    },
+    'fr-FR': {
+        short: '04/12/1987 00:00',
+        medium: '4 déc. 1987 à 00:00',
+        long: '4 décembre 1987 à 00:00 ',
+        dateShort: '04/12/1987',
+        dateMedium: '4 déc. 1987',
+        dateLong: '4 décembre 1987',
+        timeShort: '00:00',
+        timeLong: '00:00 '
+    }
+};
 
 test.before(() => {
     global.Intl = require('intl');
@@ -7,6 +31,8 @@ test.before(() => {
 
 test.beforeEach(t => {
     t.context.formats = new Formats();
+    // Provide the DEFAULT overrides
+    t.context.formats.override(FORMAT_DEFAULTS);
 });
 
 // Method Checking
@@ -33,6 +59,20 @@ test('should have formatDate defined', t => {
 
 test('should have format defined', t => {
     t.truthy(t.context.formats.format);
+});
+
+// override(overrides)
+
+test('overrides should be set', t => {
+    t.context.formats.override({ date: 'DATE' });
+    t.deepEqual(t.context.formats.defaults, { date: 'DATE' });
+});
+
+test('overrides should set locale if overrides contain it and remove it before setting defaults', t => {
+    let overrides = { locale: 'LOCALE', date: 'DATE' };
+    t.context.formats.override(overrides);
+    t.deepEqual(t.context.formats.defaults, { date: 'DATE' });
+    t.is(t.context.formats.locale, 'LOCALE');
 });
 
 // format(value, format)
@@ -154,4 +194,32 @@ test('currency should be able to take a currency as the format', t => {
     t.context.formats.setLocale('en-US');
     t.context.formats.override({});
     t.is(t.context.formats.formatCurrency(123456.789, 'EUR'), '€123,456.79');
+});
+
+test('currency should use the override currency if set', t => {
+    t.context.formats.setLocale('en-US');
+    t.context.formats.overrideCurrency('RUB');
+    t.is(t.context.formats.formatCurrency(123456.789), 'RUB 123,456.79');
+});
+
+// formatDate(value, format)
+
+test('formatDate should default to en-US for unknown locale', t => {
+    t.context.formats.setLocale('UNKNOWN');
+    t.is(t.context.formats.formatDate('12/04/1987'), '12/4/1987');
+});
+
+test('formatDate should format for a known locale', t => {
+    t.context.formats.setLocale('fr-FR');
+    t.is(t.context.formats.formatDate('12/04/1987'), '04/12/1987');
+});
+
+// Test all short hand formats
+Object.keys(FORMAT_DEFAULTS.date).forEach(format => {
+    test(`formatDate should format with the short hand "${format}"`, t => {
+        t.context.formats.setLocale('en-US');
+        t.is(t.context.formats.formatDate('12/04/1987', format), SHORT_HAND_VALUES['en-US'][format]);
+        t.context.formats.setLocale('fr-FR');
+        t.is(t.context.formats.formatDate('12/04/1987', format), SHORT_HAND_VALUES['fr-FR'][format]);
+    });
 });
