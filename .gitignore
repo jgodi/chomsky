@@ -1,7 +1,7 @@
 node_modules
 build
 src/**.js
-demo/src/chomsky
+demo/src/chomsky-copied
 
 coverage
 .nyc_output
