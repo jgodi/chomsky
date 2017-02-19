@@ -34,13 +34,12 @@ export const FORMAT_DEFAULTS: IFormatDefaults = {
             hour: '2-digit',
             minute: '2-digit'
         },
-        long: { // MMMM DD, YYYY, HH:MM A Z - Febuary 14, 2017, 1:17 PM CST
+        long: { // MMMM DD, YYYY, HH:MM A - Febuary 14, 2017, 1:17 PM
             month: 'long',
             day: '2-digit',
             year: 'numeric',
             hour: '2-digit',
-            minute: '2-digit',
-            timeZoneName: 'short'
+            minute: '2-digit'
         },
         dateShort: { // DEFAULT: DD/MM/YYYY - 02/14/2017
             month: '2-digit',
