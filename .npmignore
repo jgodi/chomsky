@@ -6,6 +6,9 @@ tslint.json
 .github
 demo
 
+*.spec.js
+*.spec.d.ts
+
 coverage
 setup-browser-env.js
 .nyc_output
