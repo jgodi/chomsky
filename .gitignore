@@ -1,5 +1,6 @@
 node_modules
 build
+lib
 src/**.js
 demo/src/chomsky-copied
 

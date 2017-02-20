@@ -6,7 +6,7 @@ const SHORT_HAND_VALUES = {
     'en-US': {
         short: '12/4/1987, 12:00',
         medium: 'Dec 4, 1987, 12:00',
-        long: 'December 4, 1987 at 12:00 ',
+        long: 'December 4, 1987 at 12:00',
         dateShort: '12/4/1987',
         dateMedium: 'Dec 4, 1987',
         dateLong: 'December 4, 1987',
@@ -16,7 +16,7 @@ const SHORT_HAND_VALUES = {
     'fr-FR': {
         short: '04/12/1987 00:00',
         medium: '4 déc. 1987 à 00:00',
-        long: '4 décembre 1987 à 00:00 ',
+        long: '4 décembre 1987 à 00:00',
         dateShort: '04/12/1987',
         dateMedium: '4 déc. 1987',
         dateLong: '4 décembre 1987',
