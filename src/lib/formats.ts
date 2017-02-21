@@ -16,7 +16,11 @@ export interface IFormatDefaults {
  */
 export class Formats {
     // Format formatDefaults
-    private defaults: IFormatDefaults;
+    private defaults: IFormatDefaults = {
+        number: {},
+        currency: {},
+        date: {}
+    };
     // Current locale
     private locale: string;
     // Override currency to blanket change the currency behavior

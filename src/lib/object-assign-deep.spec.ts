@@ -69,3 +69,10 @@ test('mergeDeep should merge objects with functions', t => {
     t.true(isFunction(result.a));
     t.true(isFunction(result.b));
 });
+
+test('mergeDeep should handle undefined', t => {
+    const a = { a: 1 };
+    const b = { b: { c: { d: 1 } } };
+    const result = { a: 1, b: { c: { d: 1 } } };
+    t.deepEqual(mergeDeep(a, b, undefined), result);
+});
