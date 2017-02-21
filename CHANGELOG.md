@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.3"></a>
+## [2.1.3](https://github.com/bullhorn/chomsky/compare/v2.1.2...v2.1.3) (2017-02-21)
+
+
+### Bug Fixes
+
+* **formats:** Making sure to default the defaults, adding test for merge deep ([124e3e9](https://github.com/bullhorn/chomsky/commit/124e3e9))
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/bullhorn/chomsky/compare/v2.1.1...v2.1.2) (2017-02-20)
 
