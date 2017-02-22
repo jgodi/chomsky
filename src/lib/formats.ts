@@ -44,7 +44,7 @@ export class Formats {
     }
 
     public formatNumber(value: number, format?: Intl.NumberFormatOptions): string {
-        let _format = mergeDeep({}, format, this.defaults.number);
+        let _format = mergeDeep({}, this.defaults.number, format);
         return new Intl.NumberFormat([this.locale, 'en-US'], _format).format(value);
     }
 
@@ -58,12 +58,13 @@ export class Formats {
     }
 
     public formatDate(value: any, format?: string | Intl.DateTimeFormatOptions): string {
+        let _value = value === null || value === undefined || value === '' ? new Date() : new Date(value);
         let shortHands = mergeDeep({}, this.defaults.date);
         let options: Intl.DateTimeFormatOptions = (typeof format === 'string') ? shortHands[format] : format;
         if (!options || Object.keys(options).length === 0) {
             options = shortHands.dateShort;
         }
-        return new Intl.DateTimeFormat([this.locale, 'en-US'], options).format(new Date(value));
+        return new Intl.DateTimeFormat([this.locale, 'en-US'], options).format(_value);
     }
 
     public format(value: string, format?: string): string {
