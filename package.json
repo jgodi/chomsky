@@ -27,6 +27,7 @@
     "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",
     "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
+    "prerelease": "yarn test",
     "release": "standard-version"
   },
   "scripts-info": {

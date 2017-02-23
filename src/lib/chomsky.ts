@@ -150,7 +150,7 @@ export class Chomsky {
 
         // Handle interpolation
         if ((interpolation || this.defaultReplacements) && value) {
-            let replacements = Object.assign({}, interpolation, this.defaultReplacements);
+            let replacements = Object.assign({}, this.defaultReplacements, interpolation);
             value = value.replace(/{([^}]*)}/gi, (m, param) => {
                 let params = param.split(':');
                 if (params.length === 1) {
@@ -213,11 +213,14 @@ export class Chomsky {
 
         if (translations) {
             let tokens = key.split('.');
-            for (let i = 0; i < tokens.length; i++) {
-                if (!value) {
-                    value = translations[tokens[i]];
-                } else {
-                    value = value[tokens[i]];
+            value = translations[tokens[0]];
+            if (value) {
+                for (let i = 1; i < tokens.length; i++) {
+                    if (!value) {
+                        value = translations[tokens[i]];
+                    } else {
+                        value = value[tokens[i]];
+                    }
                 }
             }
         }
