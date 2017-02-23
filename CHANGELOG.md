@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.7"></a>
+## [2.1.7](https://github.com/bullhorn/chomsky/compare/v2.1.5...v2.1.7) (2017-02-23)
+
+
+### Bug Fixes
+
+* **translate:** Fixing translate to not return improper key ([0fe2715](https://github.com/bullhorn/chomsky/commit/0fe2715))
+
+
+
 <a name="2.1.5"></a>
 ## [2.1.5](https://github.com/bullhorn/chomsky/compare/v2.1.4...v2.1.5) (2017-02-22)
 

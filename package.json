@@ -1,6 +1,6 @@
 {
   "name": "chomsky",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "A simple ES6 i18n engine.",
   "main": "lib/index.js",
   "typings": "build/main/index.d.ts",
