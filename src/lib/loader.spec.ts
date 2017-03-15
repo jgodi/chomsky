@@ -27,21 +27,21 @@ test('should have a method load', t => {
 
 test('load should properly load a json file', t => {
     let valid = { KEY: 'value' };
-    t.context.loader.load('/valid.json').subscribe(result => {
+    t.context.loader.load('/valid.json').then(result => {
         t.deepEqual(result, valid);
     });
     server.requests[0].respond(200, { 'Content-Type': 'application/json' }, JSON.stringify(valid));
 });
 
 test('load should reject with JSON parse fails', t => {
-    t.context.loader.load('/invalid.json').subscribe(() => { }, error => {
+    t.context.loader.load('/invalid.json').then(() => { }, error => {
         t.is(error, 'Parse Error: Invalid JSON');
     });
     server.requests[0].respond(200, { 'Content-Type': 'application/json' }, '["\t"]');
 });
 
 test('load should reject when 404 happens', t => {
-    t.context.loader.load('/404.json').subscribe(() => { }, error => {
+    t.context.loader.load('/404.json').then(() => { }, error => {
         t.is(error, 'Not Found');
     });
     server.requests[0].respond(404);

@@ -1,3 +1,6 @@
+// APP
+import { mergeDeep } from './object-assign-deep';
+
 export class DictionaryManager {
     private dictionaries: any = {};
 
@@ -10,6 +13,6 @@ export class DictionaryManager {
     }
 
     public add(locale: string, translations: any, fallbackTranslations: any): void {
-        this.dictionaries[locale] = Object.assign({}, fallbackTranslations, translations);
+        this.dictionaries[locale] = mergeDeep({}, fallbackTranslations, translations);
     }
 }

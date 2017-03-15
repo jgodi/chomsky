@@ -52,10 +52,12 @@ chomsky.onLocaleChange.subscribe((locale: string) => {
 const US_LOCALE = 'en-US';
 const FR_LOCALE = 'fr-FR';
 const GB_LOCALE = 'en-GB';
+const MISSING_LOCALE = 'en-NOPE';
 
 // Swap Locales
 chomsky.use(US_LOCALE);
 chomsky.use(FR_LOCALE);
+chomsky.use(MISSING_LOCALE);
 chomsky.use(GB_LOCALE).subscribe(() => {
     // Load US again (should not fire XHR requests)
     chomsky.use(US_LOCALE);

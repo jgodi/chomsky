@@ -4,6 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/share';
+import 'rxjs/add/observable/fromPromise';
 // APP
 import { Loader } from './loader';
 import { Formats, IFormatDefaults } from './formats';
@@ -79,8 +80,6 @@ export class Chomsky {
     private dictionaryManager = new DictionaryManager();
     // Custom formats based on the locale
     private formats = new Formats();
-    // Current pending call to fetch translations
-    private pending: any;
     // Object for default replacements, so users don't have to pass around each time
     private defaultReplacements: any = {};
     // Handle for when the locale changes
@@ -230,22 +229,21 @@ export class Chomsky {
     private getTranslations(locale: string): Observable<any> {
         // Split out the language code from the locale
         let languageCode = (locale.split('-')[0] || '').toLowerCase();
-        // Cue up two observables to grab the locale and the fallback locale
-        // en-US - locale (en-US) / fallback (en)
-        let translations = this.translationFetcher(locale);
-        let fallbackTranslations = this.translationFetcher(languageCode);
-        // Combine the two observables and share the same subscription
-        this.pending = Observable.combineLatest(translations, fallbackTranslations).share();
-        // Subscribe to the result
-        this.pending.subscribe(result => {
-            this.applyLanguage(locale, result[0], result[1]);
-        }, err => {
-            console.error('[Chomsky] - Fetching Translations Error:', err);
-        }, () => {
-            this.pending = undefined;
-        });
-
-        return this.pending;
+        // Fetch the fallback language first
+        return Observable.fromPromise(new Promise<any>((resolve, reject) => {
+            this.translationFetcher(languageCode).then(fallbackTranslations => {
+                this.translationFetcher(locale).then(translations => {
+                    this.applyLanguage(locale, translations, fallbackTranslations);
+                    resolve(true);
+                }, error => {
+                    this.applyLanguage(locale, {}, fallbackTranslations);
+                    resolve(true);
+                });
+            }, error => {
+                console.error(`[Chomsky] - Cannot find the base translation file! (${languageCode}):`, error);
+                resolve(false);
+            });
+        }));
     }
 
     private applyLanguage(locale: string, translations: any, fallbackTranslations: any): void {
@@ -270,7 +268,7 @@ export class Chomsky {
         this.onLocaleChange.next(locale);
     }
 
-    private translationFetcher(locale: string): Observable<string> {
+    private translationFetcher(locale: string): Promise<string> {
         return this.loader.load(`${this.location}${locale}.json`);
     }
 }

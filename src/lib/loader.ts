@@ -1,7 +1,3 @@
-// Vendor
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromPromise';
-
 /**
  * @name Loader
  * @description Loader to load the JSON translation files via HTTP
@@ -16,8 +12,8 @@ export class Loader {
      * @returns {Observable<string>}
      * @memberOf Loader
      */
-    public load(url: string): Observable<string> {
-        return Observable.fromPromise(new Promise((resolve, reject) => {
+    public load(url: string): Promise<string> {
+        return new Promise((resolve, reject) => {
             let xhr = new XMLHttpRequest();
             xhr.open('GET', url);
 
@@ -38,6 +34,6 @@ export class Loader {
             };
 
             xhr.send();
-        }));
+        });
     }
 }
