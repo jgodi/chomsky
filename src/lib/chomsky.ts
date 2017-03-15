@@ -236,12 +236,14 @@ export class Chomsky {
                     this.applyLanguage(locale, translations, fallbackTranslations);
                     resolve(true);
                 }, error => {
+                    console.error(`[Chomsky] - Cannot find the locale translation file! (${locale}):`, error);
                     this.applyLanguage(locale, {}, fallbackTranslations);
                     resolve(true);
                 });
             }, error => {
                 console.error(`[Chomsky] - Cannot find the base translation file! (${languageCode}):`, error);
-                resolve(false);
+                this.applyLanguage(locale, {}, {});
+                resolve(true);
             });
         }));
     }
