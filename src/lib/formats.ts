@@ -25,6 +25,8 @@ export class Formats {
     private locale: string;
     // Override currency to blanket change the currency behavior
     public overrideCurrency: string;
+    // Override to force times to display in 24 hour
+    public use24HourTime: boolean;
 
     constructor() {
         // Initially set the locale to the browser
@@ -63,6 +65,9 @@ export class Formats {
         let options: Intl.DateTimeFormatOptions = (typeof format === 'string') ? shortHands[format] : format;
         if (!options || Object.keys(options).length === 0) {
             options = shortHands.dateShort;
+        }
+        if (this.use24HourTime) {
+            options.hour12 = false;
         }
         return new Intl.DateTimeFormat([this.locale, 'en-US'], options).format(_value);
     }

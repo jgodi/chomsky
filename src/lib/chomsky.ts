@@ -103,6 +103,10 @@ export class Chomsky {
         this.formats.overrideCurrency = currency;
     }
 
+    public forceDisplayTo24HourTime(use24HourTime: boolean): void {
+        this.formats.use24HourTime = use24HourTime;
+    }
+
     public use(locale: string): Observable<any> {
         // Capture the pending task
         let pending;
