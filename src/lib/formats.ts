@@ -56,7 +56,28 @@ export class Formats {
         if (this.overrideCurrency) {
             options.currency = this.overrideCurrency;
         }
-        return new Intl.NumberFormat([this.locale, 'en-US'], options).format(value);
+
+        let currencyLocale: string = this.locale;
+        switch(options.currency) {
+            case 'PLN':
+                currencyLocale = 'pl-PL'; break;
+            case 'CHF':
+                currencyLocale = 'de-CH'; break;
+            case 'SGD':
+                currencyLocale = 'zh-SG'; break;
+            case 'HUF':
+                currencyLocale = 'hu-HU'; break;
+            case 'DKK':
+                currencyLocale = 'da-DK'; break;
+            case 'SEK':
+                currencyLocale = 'sv-SE'; break;
+            case 'NOK':
+                currencyLocale = 'no-NO'; break;
+            case 'ZAR':
+                currencyLocale = 'en-ZA'; break;
+        }
+
+        return new Intl.NumberFormat([currencyLocale, 'en-US'], options).format(value);
     }
 
     public formatDate(value: any, format?: string | Intl.DateTimeFormatOptions): string {
