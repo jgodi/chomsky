@@ -1,4 +1,5 @@
 import { mergeDeep } from './object-assign-deep';
+import { currencyOverridesMap } from './currency-overrides'
 
 // Interface for defaults
 export interface IFormatDefaults {
@@ -56,7 +57,9 @@ export class Formats {
         if (this.overrideCurrency) {
             options.currency = this.overrideCurrency;
         }
-        return new Intl.NumberFormat([this.locale, 'en-US'], options).format(value);
+
+        let currencyValue: string = new Intl.NumberFormat([this.locale, 'en-US'], options).format(value);
+        return currencyOverridesMap[options.currency] ? currencyValue.replace(options.currency, currencyOverridesMap[options.currency]) : currencyValue;
     }
 
     public formatDate(value: any, format?: string | Intl.DateTimeFormatOptions): string {
