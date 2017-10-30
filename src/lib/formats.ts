@@ -1,20 +1,11 @@
 import { mergeDeep } from './object-assign-deep';
+import { currencyOverridesMap } from './currency-overrides'
 
 // Interface for defaults
 export interface IFormatDefaults {
     number: Intl.NumberFormatOptions;
     currency: Intl.NumberFormatOptions;
     date: any;
-}
-
-const currencyOverridesMap = {
-    PLN: 'zł',
-    SGD: 'S$',
-    HUF: 'Ft',
-    DKK: 'kr.',
-    SEK: 'kr',
-    NOK: 'kr',
-    ZAR: 'R'
 }
 
 /**
