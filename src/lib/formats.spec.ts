@@ -202,6 +202,12 @@ test('currency should use the override currency if set', t => {
     t.is(t.context.formats.formatCurrency(123456.789), 'RUB123,456.79');
 });
 
+test('currency should be able to format with currency format of None', t => {
+    t.context.formats.setLocale('en-US');
+    t.context.formats.overrideCurrency = 'None';
+    t.is(t.context.formats.formatCurrency(123456.789), '123,456.79');
+});
+
 // formatDate(value, format)
 
 test('formatDate should default to en-US for unknown locale', t => {

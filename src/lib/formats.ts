@@ -1,5 +1,5 @@
 import { mergeDeep } from './object-assign-deep';
-import { currencyOverridesMap } from './currency-overrides'
+import { currencyOverridesMap } from './currency-overrides';
 
 // Interface for defaults
 export interface IFormatDefaults {
