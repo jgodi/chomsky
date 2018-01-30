@@ -1,5 +1,5 @@
 import { mergeDeep } from './object-assign-deep';
-import { currencyOverridesMap } from './currency-overrides'
+import { currencyOverridesMap } from './currency-overrides';
 
 // Interface for defaults
 export interface IFormatDefaults {
@@ -55,6 +55,9 @@ export class Formats {
         let _format: Intl.NumberFormatOptions = (typeof format === 'string') ? mergeDeep({}, { currency: format }, this.defaults.currency) : mergeDeep({}, format, this.defaults.currency);
         let options = mergeDeep({ style: 'currency', currency: 'USD' }, _format);
         if (this.overrideCurrency) {
+            if (this.overrideCurrency === 'None') {
+                return new Intl.NumberFormat([this.locale, 'en-US'], {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value);
+            }
             options.currency = this.overrideCurrency;
         }
 
