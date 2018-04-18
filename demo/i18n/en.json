@@ -4,7 +4,7 @@
   "TODAY": "Today is {today:date}.",
   "TOMORROW": "Today is {tomorrow:date}.",
   "MONEY": "You owe: {debt:currency}",
-  "NUMBER": "There are {people:number} things",
+  "NUMBER": "There are {people:number} people",
   "MESSAGES": {
     "other": {
       "zero": "No messages.",

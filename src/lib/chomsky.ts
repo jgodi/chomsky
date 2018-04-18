@@ -165,7 +165,7 @@ export class Chomsky {
                     }
                     return match;
                 }
-                let unparsedValue = replacements[params[0]] || interpolation;
+                let unparsedValue = replacements.hasOwnProperty(params[0]) ? replacements[params[0]] : interpolation;
                 switch (params[1]) {
                     case 'date':
                         return this.formatDate(unparsedValue, params[2]);

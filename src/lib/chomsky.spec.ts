@@ -242,6 +242,15 @@ test('translate should resolve dynamic number variables with custom formatting i
     t.is(t.context.chomsky.translate('placements', mockDynamicValues), 'Vous avez besoin 123,456.23.');
 });
 
+test('translate should resolve numbers allowing zero as a number', t => {
+    let mockDynamicValues = { placed: 0 };
+    t.context.chomsky.formats.override(FORMAT_DEFAULTS);
+    t.context.chomsky.currentLocale = 'en';
+    t.is(t.context.chomsky.translate('placements', mockDynamicValues), 'You need 0.');
+    t.context.chomsky.currentLocale = 'fr';
+    t.is(t.context.chomsky.translate('placements', mockDynamicValues), 'Vous avez besoin 0.');
+});
+
 test('translate should resolve plural values', t => {
     t.context.chomsky.currentLocale = 'en';
     t.is(t.context.chomsky.translate('messages', { quantity: 0 }), 'No messages.');
