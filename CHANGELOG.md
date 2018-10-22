@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/bullhorn/chomsky/compare/v2.1.7...v2.2.0) (2018-10-22)
+
+
+### Bug Fixes
+
+* **currency:** Handling default currency of NONE ([9f4c4f7](https://github.com/bullhorn/chomsky/commit/9f4c4f7))
+* **fallback:** Allowing chomsky to work with just the base translation file ([bce0b4e](https://github.com/bullhorn/chomsky/commit/bce0b4e))
+* **fallback:** Allowing chomsky to work with just the base translation file ([8b6c7ba](https://github.com/bullhorn/chomsky/commit/8b6c7ba))
+
+
+### Features
+
+* **format:** Adding way to default to 24hour time ([5cd184c](https://github.com/bullhorn/chomsky/commit/5cd184c))
+* **formats:** Adding currency display override ([aaa2007](https://github.com/bullhorn/chomsky/commit/aaa2007))
+
+
+
 <a name="2.1.7"></a>
 ## [2.1.7](https://github.com/bullhorn/chomsky/compare/v2.1.5...v2.1.7) (2017-02-23)
 
