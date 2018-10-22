@@ -14,14 +14,14 @@ const SHORT_HAND_VALUES = {
         timeLong: '12:00 '
     },
     'fr-FR': {
-        short: '04/12/1987 00:00',
-        medium: '4 déc. 1987 à 00:00',
-        long: '4 décembre 1987 à 00:00',
+        short: '04/12/1987 12:00',
+        medium: '4 déc. 1987 à 12:00',
+        long: '4 décembre 1987 à 12:00',
         dateShort: '04/12/1987',
         dateMedium: '4 déc. 1987',
         dateLong: '4 décembre 1987',
-        timeShort: '00:00',
-        timeLong: '00:00 '
+        timeShort: '12:00',
+        timeLong: '12:00 '
     }
 };
 
