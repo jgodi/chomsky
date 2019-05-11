@@ -30,6 +30,7 @@ chomsky.onLocaleChange.subscribe((locale: string) => {
     console.log('\t' + chomsky.translate('TODAY', { today: new Date() }));
     console.log('\t' + chomsky.translate('TOMORROW', { tomorrow: '7/4/1776' }));
     console.log('\t' + chomsky.translate('MONEY', { debt: 123456.1 }));
+    console.log('\t' + chomsky.translate('NUMBER', { people: 0 }));
     console.log('\t' + chomsky.translate('NUMBER', { people: 1234567 }));
     console.log('\t' + chomsky.translate('MESSAGES', { quantity: 0 }));
     console.log('\t' + chomsky.translate('MESSAGES', { quantity: 1 }));
